@@ -5,11 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/M2DAPIGatekeeper.svg?style=flat)](http://cocoadocs.org/docsets/M2DAPIGatekeeper)
 [![Platform](https://img.shields.io/cocoapods/p/M2DAPIGatekeeper.svg?style=flat)](http://cocoadocs.org/docsets/M2DAPIGatekeeper)
 
-## Usage
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
 ## Requirements
+
+- Runs on iOS 6.0 or later.
 
 ## Installation
 
@@ -17,6 +15,54 @@ M2DAPIGatekeeper is available through [CocoaPods](http://cocoapods.org). To inst
 it, simply add the following line to your Podfile:
 
     pod "M2DAPIGatekeeper"
+
+## Usage
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+Only two steps to send request like this.
+
+	// Send asynchronous request
+	M2DAPIRequest *req = [[[M2DAPIRequest GETRequest:[NSURL URLWithString:...]] parametors:@{...}] asynchronousRequest];
+	[[M2DAPIGatekeeper sharedInstance] sendRequest:req];
+
+A lot of methods to control each sequences.
+For example,
+
+	M2DAPIGatekeeper *gatekeeper = [M2DAPIGatekeeper sharedInstance];
+	[gatekeeper parseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
+		// parse data
+		NSError *e = nil;
+		id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
+		if (e != nil) {
+			*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
+		}
+		return parsedObject;
+	}];
+	[gatekeeper resultConditionBlock:^BOOL(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
+		return [(NSHTTPURLResponse *)response statusCode] == 200;
+	}];
+
+	[gatekeeper initializeBlock:^(M2DAPIRequest *request, NSDictionary *params) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			// Show hud when start request
+		});
+	}];
+	[gatekeeper finalizeBlock:^(M2DAPIRequest *request) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			// Dismiss hud when finish request
+		});
+	}];
+
+and so more.
+
+When start connection, unique identifier is generated.
+You can use the identifier to cancel request .
+
+	NSString *identifier = [gatekeeper sendRequest:...];
+	[gatekeeper cancelRequestWithIdentifier:identifier];
+
+Please see also M2DAPIGatekeeper.h or M2DAPIRequest.h.
 
 ## Author
 
