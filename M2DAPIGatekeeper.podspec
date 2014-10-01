@@ -17,8 +17,7 @@ Pod::Spec.new do |s|
                        * Markdown format.
                        * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/M2DAPIGatekeeper"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/0x0c/M2DAPIGatekeeper"
   s.license          = 'MIT'
   s.author           = { "Akira Matsuda" => "akira.m.itachi@gmail.com" }
   s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/M2DAPIGatekeeper.git", :tag => s.version.to_s }
@@ -28,9 +27,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes'
-  s.resource_bundles = {
-    'M2DAPIGatekeeper' => ['Pod/Assets/*.png']
-  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
