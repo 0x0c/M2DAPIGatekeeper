@@ -12,16 +12,12 @@ Pod::Spec.new do |s|
   s.version          = "0.1.0"
   s.summary          = "A short description of M2DAPIGatekeeper."
   s.description      = <<-DESC
-                       An optional longer description of M2DAPIGatekeeper
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+							Simple API networking framework
                        DESC
   s.homepage         = "https://github.com/0x0c/M2DAPIGatekeeper"
   s.license          = 'MIT'
   s.author           = { "Akira Matsuda" => "akira.m.itachi@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/M2DAPIGatekeeper.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/0x0c/M2DAPIGatekeeper.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
@@ -30,5 +26,4 @@ Pod::Spec.new do |s|
 
   s.public_header_files = 'Pod/Classes/M2DAPIGatekeeper/*.h', 'Pod/Classes/M2DAPIRequest/*.h'
   s.frameworks = 'UIKit', 'QartzCore'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
