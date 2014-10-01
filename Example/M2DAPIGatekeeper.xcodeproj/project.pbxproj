@@ -49,6 +49,7 @@
 		E9876C2A19DBA90000A498F3 /* NSMutableURLRequest+M2DFileUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+M2DFileUpload.m"; sourceTree = "<group>"; };
 		E9876C2C19DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+M2DHTTPMethod.h"; sourceTree = "<group>"; };
 		E9876C2D19DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+M2DHTTPMethod.m"; sourceTree = "<group>"; };
+		E9876C3719DBB01800A498F3 /* M2DAPIGatekeeper-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "M2DAPIGatekeeper-prefix.pch"; sourceTree = "<group>"; };
 		EE36EA39BA7DC2A71940E5ED /* Pods-M2DAPIGatekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-M2DAPIGatekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-M2DAPIGatekeeper/Pods-M2DAPIGatekeeper.debug.xcconfig"; sourceTree = "<group>"; };
 		F53CB8BBC19418446CDC1C53 /* M2DAPIGatekeeper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = M2DAPIGatekeeper.podspec; path = ../M2DAPIGatekeeper.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +72,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				E9876C3719DBB01800A498F3 /* M2DAPIGatekeeper-prefix.pch */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				E9876C1619DBA90000A498F3 /* Pod */,
 				6003F5B5195388D20070C39A /* Tests */,

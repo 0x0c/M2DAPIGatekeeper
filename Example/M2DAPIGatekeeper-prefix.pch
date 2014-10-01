@@ -1,0 +1,13 @@
+//
+//  M2DAPIGatekeeper-prefix.pch
+//  M2DAPIGatekeeper
+//
+//  Created by Akira Matsuda on 10/1/14.
+//  Copyright (c) 2014 Akira Matsuda. All rights reserved.
+//
+
+#ifndef M2DAPIGatekeeper_M2DAPIGatekeeper_prefix_pch
+#define M2DAPIGatekeeper_M2DAPIGatekeeper_prefix_pch
+
+
+#endif

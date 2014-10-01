@@ -10,9 +10,10 @@
 Pod::Spec.new do |s|
   s.name             = "M2DAPIGatekeeper"
   s.version          = "0.1.0"
-  s.summary          = "A short description of M2DAPIGatekeeper."
+  s.summary          = "Simple API networking framework."
   s.description      = <<-DESC
-							Simple API networking framework
+							Simple API networking framework.
+							Easy to send request for Web API.
                        DESC
   s.homepage         = "https://github.com/0x0c/M2DAPIGatekeeper"
   s.license          = 'MIT'
