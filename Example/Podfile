@@ -1,0 +1,7 @@
+
+target 'M2DAPIGatekeeper', :exclusive => true do
+  pod "M2DAPIGatekeeper", :path => "../"
+
+  pod 'Specta', '~> 0.2.1'
+  pod 'Expecta'
+end
