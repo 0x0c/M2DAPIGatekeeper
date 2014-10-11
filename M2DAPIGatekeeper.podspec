@@ -26,5 +26,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*.{h,m}'
 
   s.public_header_files = 'Pod/Classes/M2DAPIGatekeeper/*.h', 'Pod/Classes/M2DAPIRequest/*.h'
-  s.frameworks = 'UIKit', 'QartzCore'
+  s.frameworks = 'UIKit', 'QuartzCore'
 end
