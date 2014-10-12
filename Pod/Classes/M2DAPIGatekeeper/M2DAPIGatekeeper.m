@@ -57,14 +57,13 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 
 - (NSString *)sendRequest:(M2DAPIRequest *)request
 {
-	if (request.requestParametors) {
-		[request m2d_setParameter:request.requestParametors method:request.httpMethod];
-	}
-	
 	if (self.baseParameter) {
 		NSMutableDictionary *p = [request.requestParametors mutableCopy];
 		[p addEntriesFromDictionary:self.baseParameter];
 		[request parametors:p];
+	}
+	if (request.requestParametors) {
+		[request m2d_setParameter:request.requestParametors method:request.httpMethod];
 	}
 	
 	if (request.resultConditionBlock == nil) {
@@ -119,7 +118,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	};
 	
 	if (_debugMode) {
-		NSLog(@"post:[%@://%@%@]%@", request.URL.scheme, request.URL.host, request.URL.path, [request.requestParametors description]);
+		NSLog(@"post:[%@]%@", [request.URL absoluteString], [request.requestParametors description]);
 	}
 	
 	NSString *identifier = nil;
