@@ -14,7 +14,7 @@
 {
 	BOOL (^resultConditionBlock_)(NSURLResponse *response, id parsedObject);
 	void (^successBlock_)(M2DAPIRequest *request, id parsedObject);
-	void (^failureBlock_)(M2DAPIRequest *request, NSError *error);
+	void (^failureBlock_)(M2DAPIRequest *request, id parsedObject, NSError *error);
 }
 
 @end
@@ -94,7 +94,7 @@
 	return self;
 }
 
-- (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, NSError *error))failureBlock
+- (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock
 {
 	self.failureBlock = failureBlock;
 	return self;

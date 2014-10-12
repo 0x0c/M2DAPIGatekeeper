@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return sharedInstance;
 }
 
-- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSError *error))failureBlock asynchronous:(BOOL)flag
+- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag
 {
 	M2DAPIRequest *req = nil;
 	if ([method isEqualToString:M2DHTTPMethodGET]) {
@@ -84,7 +84,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
 		id parsedObject = nil;
 		if (request.failureBlock && error) {
-			request.failureBlock(request, error);
+			request.failureBlock(request, parsedObject, error);
 		}
 		else {
 			__autoreleasing NSError *e = nil;
@@ -95,10 +95,10 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			}
 			else if	(request.failureBlock) {
 				if (e) {
-					request.failureBlock(request, e);
+					request.failureBlock(request, parsedObject, e);
 				}
 				else {
-					request.failureBlock(request, e2);
+					request.failureBlock(request, parsedObject, e2);
 				}
 			}
 		}

@@ -27,7 +27,7 @@ extern NSString *const M2DHTTPMethodGET;
 @property (nonatomic, copy) BOOL (^resultConditionBlock)(NSURLResponse *response, id parsedObject, NSError **error);
 
 + (instancetype)sharedInstance;
-- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSError *error))failureBlock asynchronous:(BOOL)flag;
+- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag;
 - (NSString *)sendRequest:(M2DAPIRequest *)request;
 - (NSString *)sendAsynchronousRequest:(M2DAPIRequest *)request;
 - (instancetype)parseBlock:(id (^)(NSData *data, NSError **error))parseBlock;
