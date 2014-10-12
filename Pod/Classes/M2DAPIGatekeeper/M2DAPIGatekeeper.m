@@ -118,6 +118,10 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		}
 	};
 	
+	if (_debugMode) {
+		NSLog(@"post:[%@://%@%@]%@", request.URL.scheme, request.URL.host, request.URL.path, [request.requestParametors description]);
+	}
+	
 	NSString *identifier = nil;
 	if (request.willSendAsynchronous) {
 		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -138,10 +142,6 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSURLResponse *response = nil;
 		NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
 		f(response, data, error);
-	}
-	
-	if (_debugMode) {
-		NSLog(@"post:[%@://%@%@]%@", request.URL.scheme, request.URL.host, request.URL.path, [request.requestParametors description]);
 	}
 	
 	return identifier;
