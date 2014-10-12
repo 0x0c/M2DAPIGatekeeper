@@ -111,8 +111,8 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		
 		if (_debugMode) {
 			__autoreleasing NSString *r = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			NSLog(@"result[%lu]:%@", [(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
-			NSLog(@"raw result:[%lu][%@://%@%@]%@", [(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
+			NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
+			NSLog(@"raw result:[%lu][%@://%@%@]%@", (long)[(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
 		}
 	};
 	
@@ -143,6 +143,12 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	}
 	
 	return identifier;
+}
+
+- (NSString *)sendAsynchronousRequest:(M2DAPIRequest *)request
+{
+	[request asynchronousRequest];
+	return [self sendRequest:request];
 }
 
 - (instancetype)parseBlock:(id (^)(NSData *data, NSError **error))parseBlock
