@@ -23,8 +23,12 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Only two steps to send request like this.
 
 	// Send asynchronous request
-	M2DAPIRequest *req = [[[M2DAPIRequest GETRequest:[NSURL URLWithString:...]] parametors:@{...}] asynchronousRequest];
-	[[M2DAPIGatekeeper sharedInstance] sendRequest:req];
+	M2DAPIRequest *request = [[[[M2DAPIRequest POSTRequest:[NSURL URLWithString:...]] parametors:@{...}]  whenSucceeded:^(M2DAPIRequest *request, NSDictionary *httpHeaderField, id parsedObject) {
+		//When result condition is true
+	}] whenFailed:^(M2DAPIRequest *request, NSDictionary *httpHeaderField, id parsedObject, NSError *error) {
+		//When result condition is false
+	}];
+	[[M2DAPIGatekeeper sharedInstance] sendRequest:request];
 
 A lot of methods to control each sequences.
 For example,
@@ -48,7 +52,7 @@ For example,
 			// Show hud when start request
 		});
 	}];
-	[gatekeeper finalizeBlock:^(M2DAPIRequest *request) {
+	[gatekeeper finalizeBlock:^(M2DAPIRequest *request, NSDictionary *httpHeaderField, id parsedObject) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			// Dismiss hud when finish request
 		});
