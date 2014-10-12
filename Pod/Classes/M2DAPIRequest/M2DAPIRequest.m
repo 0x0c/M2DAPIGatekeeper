@@ -13,8 +13,8 @@
 @interface M2DAPIRequest ()
 {
 	BOOL (^resultConditionBlock_)(NSURLResponse *response, id parsedObject);
-	void (^successBlock_)(M2DAPIRequest *request, id parsedObject);
-	void (^failureBlock_)(M2DAPIRequest *request, id parsedObject, NSError *error);
+	void (^successBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
+	void (^failureBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
 }
 
 @end
@@ -88,13 +88,13 @@
 	return self;
 }
 
-- (instancetype)whenSucceeded:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock
+- (instancetype)whenSucceeded:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock
 {
 	self.successBlock = successBlock;
 	return self;
 }
 
-- (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock
+- (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock
 {
 	self.failureBlock = failureBlock;
 	return self;

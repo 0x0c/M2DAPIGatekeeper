@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return sharedInstance;
 }
 
-- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag
+- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag
 {
 	M2DAPIRequest *req = nil;
 	if ([method isEqualToString:M2DHTTPMethodGET]) {
@@ -80,25 +80,25 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		self.initializeBlock(request, request.requestParametors);
 	}
 	
-	__block void (^finalizeBlock)(M2DAPIRequest *request, id parsedObject) = self.finalizeBlock;
+	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject) = self.finalizeBlock;
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
 		id parsedObject = nil;
 		if (request.failureBlock && error) {
-			request.failureBlock(request, parsedObject, error);
+			request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, error);
 		}
 		else {
 			__autoreleasing NSError *e = nil;
 			parsedObject = request.parseBlock(data, &e);
 			NSError *e2 = nil;
 			if (request.resultConditionBlock(response, parsedObject, &e2) && request.successBlock) {
-				request.successBlock(request, parsedObject);
+				request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
 			}
 			else if	(request.failureBlock) {
 				if (e) {
-					request.failureBlock(request, parsedObject, e);
+					request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e);
 				}
 				else {
-					request.failureBlock(request, parsedObject, e2);
+					request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e2);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			request.finalizeBlock(request, parsedObject);
 		}
 		if (finalizeBlock) {
-			finalizeBlock(request, parsedObject);
+			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
 		}
 		
 		if (_debugMode) {

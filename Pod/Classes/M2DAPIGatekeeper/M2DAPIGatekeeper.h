@@ -22,12 +22,12 @@ extern NSString *const M2DHTTPMethodGET;
 @property (nonatomic, copy) void (^didRequestIdentifierPopBlock)(NSArray *identifiers);
 
 @property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request, NSDictionary *params);
-@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, id parsedObject);
+@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
 @property (nonatomic, copy) BOOL (^resultConditionBlock)(NSURLResponse *response, id parsedObject, NSError **error);
 
 + (instancetype)sharedInstance;
-- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag;
+- (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag;
 - (NSString *)sendRequest:(M2DAPIRequest *)request;
 - (NSString *)sendAsynchronousRequest:(M2DAPIRequest *)request;
 - (instancetype)parseBlock:(id (^)(NSData *data, NSError **error))parseBlock;
