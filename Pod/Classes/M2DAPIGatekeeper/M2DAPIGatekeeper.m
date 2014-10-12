@@ -84,7 +84,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	__block void (^finalizeBlock)(M2DAPIRequest *request, id parsedObject) = self.finalizeBlock;
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
 		id parsedObject = nil;
-		if (error) {
+		if (request.failureBlock && error) {
 			request.failureBlock(request, error);
 		}
 		else {
@@ -94,11 +94,13 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			if (request.resultConditionBlock(response, parsedObject, &e2) && request.successBlock) {
 				request.successBlock(request, parsedObject);
 			}
-			else if (e) {
-				request.failureBlock(request, e);
-			}
 			else if	(request.failureBlock) {
-				request.failureBlock(request, e2);
+				if (e) {
+					request.failureBlock(request, e);
+				}
+				else {
+					request.failureBlock(request, e2);
+				}
 			}
 		}
 		
