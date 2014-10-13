@@ -56,12 +56,14 @@
 	return request;
 }
 
-- (instancetype)init
+- (instancetype)initWithURL:(NSURL *)URL
 {
-	self = [super init];
+	self = [super initWithURL:URL];
 	if (self) {
 		_identifier = [[NSProcessInfo processInfo] globallyUniqueString];
+		_requestParametors = @{};
 	}
+	
 	return self;
 }
 
