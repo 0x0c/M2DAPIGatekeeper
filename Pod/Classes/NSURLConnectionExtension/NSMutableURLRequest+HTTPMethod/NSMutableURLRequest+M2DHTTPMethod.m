@@ -13,40 +13,24 @@
 - (void)m2d_setParameter:(NSDictionary *)params method:(NSString *)method
 {
 	[self setHTTPShouldUsePipelining:YES];
-	if ([method isEqualToString:M2DHTTPMethodPOST]) {
-		NSMutableData *data = [NSMutableData data];
-		NSInteger cnt = [params count];
-		NSInteger i = 0;
-		for (NSString *key in params) {
-			NSString *appendString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)key, NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
-			NSString *p1 = [NSString stringWithFormat:@"%@=",appendString];
-			appendString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)([params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key]), NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
-			NSString *p2 = [NSString stringWithString:appendString];
-			[data appendData:[p1 dataUsingEncoding:NSUTF8StringEncoding]];
-			[data appendData:[p2 dataUsingEncoding:NSUTF8StringEncoding]];
-			if (i < cnt - 1) {
-				[data appendData:[@"&" dataUsingEncoding:NSUTF8StringEncoding]];
-				i++;
-			}
+	NSMutableString *parameterString = [NSMutableString new];
+	[params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		if (parameterString.length > 0) {
+			[parameterString appendString:@"&"];
 		}
-		
+		NSString *escapedKey = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)key, NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
+		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
+		NSString *escapedValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)(value), NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
+		[parameterString appendString:[NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue]];
+	}];
+	
+	if ([method isEqualToString:M2DHTTPMethodPOST]) {
+		[self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 		[self setHTTPMethod:method];
-		[self setHTTPBody:data];
+		[self setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
 	}
 	else if ([method isEqualToString:M2DHTTPMethodGET]) {
-		NSMutableString *url = [NSMutableString stringWithString:self.URL.absoluteString];
-		[url appendString:@"?"];
-		NSInteger cnt = [params count];
-		NSInteger i = 0;
-		for (NSString *key in params) {
-			[url appendFormat:@"%@=%@",key,params[key]];
-			if (i < cnt - 1) {
-				[url appendString:@"&"];
-				i++;
-			}
-		}
-		
-		[self setURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+		[self setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", self.URL.absoluteString, parameterString]]];
 	}
 }
 
