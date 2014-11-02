@@ -18,6 +18,9 @@
 		if (parameterString.length > 0) {
 			[parameterString appendString:@"&"];
 		}
+		else {
+			[parameterString appendString:@"?"];
+		}
 		NSString *escapedKey = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)key, NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
 		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
 		NSString *escapedValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)(value), NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
