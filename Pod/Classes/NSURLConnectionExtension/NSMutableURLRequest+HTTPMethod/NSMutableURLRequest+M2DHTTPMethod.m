@@ -19,7 +19,9 @@
 			[parameterString appendString:@"&"];
 		}
 		else {
-			[parameterString appendString:@"?"];
+			if ([method isEqualToString:M2DHTTPMethodGET]) {
+				[parameterString appendString:@"?"];
+			}
 		}
 		NSString *escapedKey = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)key, NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
 		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
