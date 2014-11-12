@@ -9,6 +9,10 @@
 
 - Runs on iOS 6.0 or later.
 
+## Contribution
+
+Please create branch from `develop` branch and send pull request to `develop` branch.
+
 ## Installation
 
 M2DAPIGatekeeper is available through [CocoaPods](http://cocoapods.org). To install
