@@ -120,7 +120,7 @@
 	return self;
 }
 
-- (instancetype)finalize:(void (^)(M2DAPIRequest *, id))finalizeBlock
+- (instancetype)finalize:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock
 {
 	self.finalizeBlock = finalizeBlock;
 	return self;

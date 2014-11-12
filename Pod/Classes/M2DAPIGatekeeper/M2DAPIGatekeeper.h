@@ -36,7 +36,7 @@ extern NSString *const M2DHTTPMethodGET;
 - (instancetype)parseBlock:(id (^)(NSData *data, NSError **error))parseBlock;
 - (instancetype)resultConditionBlock:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock;
 - (instancetype)initializeBlock:(void (^)(M2DAPIRequest *request, NSDictionary *params))initializeBlock;
-- (instancetype)finalizeBlock:(void (^)(M2DAPIRequest *request))finalizeBlock;
+- (instancetype)finalizeBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock;
 - (void)cancelRequestWithIdentifier:(NSString *)identifier;
 - (void)cancelAllRequest;
 

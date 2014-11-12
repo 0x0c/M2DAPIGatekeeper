@@ -66,29 +66,30 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	
 	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject) = self.finalizeBlock;
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
+		NSError *finalError = error;
 		id parsedObject = nil;
-		if (request.failureBlock && error) {
-			request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, error);
+		if (error) {
+			if (request.failureBlock) {
+				request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
+			}
 		}
 		else {
 			__autoreleasing NSError *e = nil;
 			parsedObject = request.parseBlock(data, &e);
+			finalError = e;
 			NSError *e2 = nil;
-			if (request.resultConditionBlock(response, parsedObject, &e2) && request.successBlock) {
+			BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+			finalError = e2;
+			if (result && finalError && request.successBlock) {
 				request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
 			}
 			else if	(request.failureBlock) {
-				if (e) {
-					request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e);
-				}
-				else {
-					request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e2);
-				}
+				request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
 			}
 		}
 		
 		if (request.finalizeBlock) {
-			request.finalizeBlock(request, parsedObject);
+			request.finalizeBlock(request, parsedObject, finalError);
 		}
 		if (finalizeBlock) {
 			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
@@ -142,28 +143,28 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSLog(@"post:[%@]%@", [request.URL absoluteString], [request.requestParametors description]);
 	}
 
+	NSError *finalError = nil;
 	NSError *error = nil;
 	NSURLResponse *response = nil;
 	NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
-	
+	finalError = error;
 	id parsedObject = nil;
-	if (request.failureBlock && error) {
-		request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, error);
+	if (error) {
+		if (request.failureBlock) {
+			request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
+		}
 	}
 	else {
 		__autoreleasing NSError *e = nil;
 		parsedObject = request.parseBlock(data, &e);
 		NSError *e2 = nil;
-		if (request.resultConditionBlock(response, parsedObject, &e2) && request.successBlock) {
+		BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+		finalError = e2;
+		if (result && finalError && request.successBlock) {
 			request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
 		}
 		else if	(request.failureBlock) {
-			if (e) {
-				request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e);
-			}
-			else {
-				request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, e2);
-			}
+			request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
 		}
 	}
 	
@@ -174,7 +175,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	}
 	
 	if (request.finalizeBlock) {
-		request.finalizeBlock(request, parsedObject);
+		request.finalizeBlock(request, parsedObject, finalError);
 	}
 	if (self.finalizeBlock) {
 		self.finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
@@ -265,7 +266,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return self;
 }
 
-- (instancetype)finalizeBlock:(void (^)(M2DAPIRequest *request))finalizeBlock
+- (instancetype)finalizeBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock
 {
 	_finalizeBlock = [finalizeBlock copy];
 	return self;

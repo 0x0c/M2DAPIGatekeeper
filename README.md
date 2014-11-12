@@ -36,9 +36,10 @@ For example,
 	M2DAPIGatekeeper *gatekeeper = [M2DAPIGatekeeper sharedInstance];
 	[gatekeeper parseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
 		// parse data
+		id parsedObject = nil;
 		NSError *e = nil;
-		if (data != nil) {
-      id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
+		if (error == nil && data != nil) {
+			parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
 			*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
 		}
 		return parsedObject;

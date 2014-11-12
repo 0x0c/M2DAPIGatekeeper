@@ -20,7 +20,7 @@
 - (instancetype)parseAlgorithm:(id (^)(NSData *data, NSError **error))parseBlock;
 - (instancetype)resultCondition:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock;
 - (instancetype)initialize:(void (^)(M2DAPIRequest *request))initializeBlock;
-- (instancetype)finalize:(void (^)(M2DAPIRequest *request, id parsedObject))finalizeBlock;
+- (instancetype)finalize:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock;
 - (instancetype)inProgress:(void (^)(CGFloat progress))progressBlock;
 
 @property (nonatomic, assign) BOOL willSendAsynchronous;
@@ -32,7 +32,7 @@
 @property (nonatomic, copy) void (^successBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
 @property (nonatomic, copy) void (^failureBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
 @property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request);
-@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, id parsedObject);
+@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
 @property (nonatomic, copy) void (^progressBlock)(CGFloat progress);
 
 @end
