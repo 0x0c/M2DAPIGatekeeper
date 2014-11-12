@@ -11,7 +11,7 @@
 
 ## Contribution
 
-Please create branch from `develop` branch and send pull request to `develop` branch.
+Please use git flow and send pull request to `develop` branch.
 
 ## Installation
 
