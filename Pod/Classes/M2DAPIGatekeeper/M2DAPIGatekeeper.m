@@ -160,7 +160,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSError *e2 = nil;
 		BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
 		finalError = e2;
-		if (result && finalError =! nil && request.successBlock) {
+		if (result && finalError != nil && request.successBlock) {
 			request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
 		}
 		else if	(request.failureBlock) {
