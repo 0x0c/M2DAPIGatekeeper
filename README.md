@@ -37,8 +37,8 @@ For example,
 	[gatekeeper parseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
 		// parse data
 		NSError *e = nil;
-		id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
-		if (e != nil) {
+		if (data != nil) {
+      id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
 			*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
 		}
 		return parsedObject;
@@ -75,4 +75,3 @@ Akira Matsuda, akira.m.itachi@gmail.com
 ## License
 
 M2DAPIGatekeeper is available under the MIT license. See the LICENSE file for more info.
-
