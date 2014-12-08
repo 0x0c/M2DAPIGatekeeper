@@ -7,18 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55B68450BEBC9532D2FB9447 /* libPods-M2DAPIGatekeeper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D3A1196A128F24FA301A50 /* libPods-M2DAPIGatekeeper.a */; };
-		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
-		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		E9876C3019DBA90000A498F3 /* M2DAPIGatekeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C1D19DBA90000A498F3 /* M2DAPIGatekeeper.m */; };
-		E9876C3119DBA90000A498F3 /* M2DAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C2019DBA90000A498F3 /* M2DAPIRequest.m */; };
-		E9876C3219DBA90000A498F3 /* M2DURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C2319DBA90000A498F3 /* M2DURLConnectionOperation.m */; };
-		E9876C3319DBA90000A498F3 /* M2DNSURLConnectionExtensionConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C2719DBA90000A498F3 /* M2DNSURLConnectionExtensionConstant.m */; };
-		E9876C3419DBA90000A498F3 /* NSMutableURLRequest+M2DFileUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C2A19DBA90000A498F3 /* NSMutableURLRequest+M2DFileUpload.m */; };
-		E9876C3519DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E9876C2D19DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.m */; };
+		5D99A50AC0E34BC5B0EF2317 /* libPods-M2DAPIGatekeeper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D3A1196A128F24FA301A50 /* libPods-M2DAPIGatekeeper.a */; };
+		E99ACDEA1A164604001FEB35 /* M2DAPIGatekeeperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E99ACDE91A164604001FEB35 /* M2DAPIGatekeeperTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +17,7 @@
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F5AE195388D20070C39A /* M2DAPIGatekeeper.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = M2DAPIGatekeeper.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
-		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		61F772A705B1029D039CB348 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BEAAC63DBE0D72A24DAEEDE7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E2089528CD7581F8EEB61297 /* Pods-M2DAPIGatekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-M2DAPIGatekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-M2DAPIGatekeeper/Pods-M2DAPIGatekeeper.release.xcconfig"; sourceTree = "<group>"; };
@@ -50,19 +35,19 @@
 		E9876C2C19DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+M2DHTTPMethod.h"; sourceTree = "<group>"; };
 		E9876C2D19DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+M2DHTTPMethod.m"; sourceTree = "<group>"; };
 		E9876C3719DBB01800A498F3 /* M2DAPIGatekeeper-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "M2DAPIGatekeeper-prefix.pch"; sourceTree = "<group>"; };
+		E99ACDE51A164604001FEB35 /* M2DAPIGatekeeper.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = M2DAPIGatekeeper.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E99ACDE81A164604001FEB35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E99ACDE91A164604001FEB35 /* M2DAPIGatekeeperTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M2DAPIGatekeeperTest.m; sourceTree = "<group>"; };
 		EE36EA39BA7DC2A71940E5ED /* Pods-M2DAPIGatekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-M2DAPIGatekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-M2DAPIGatekeeper/Pods-M2DAPIGatekeeper.debug.xcconfig"; sourceTree = "<group>"; };
 		F53CB8BBC19418446CDC1C53 /* M2DAPIGatekeeper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = M2DAPIGatekeeper.podspec; path = ../M2DAPIGatekeeper.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6003F5AB195388D20070C39A /* Frameworks */ = {
+		E99ACDE21A164604001FEB35 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
-				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				55B68450BEBC9532D2FB9447 /* libPods-M2DAPIGatekeeper.a in Frameworks */,
+				5D99A50AC0E34BC5B0EF2317 /* libPods-M2DAPIGatekeeper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +60,7 @@
 				E9876C3719DBB01800A498F3 /* M2DAPIGatekeeper-prefix.pch */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				E9876C1619DBA90000A498F3 /* Pod */,
-				6003F5B5195388D20070C39A /* Tests */,
+				E99ACDE61A164604001FEB35 /* M2DAPIGatekeeperTest */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				C3D5111A5F40085F28D7C5A0 /* Pods */,
@@ -86,7 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				6003F58A195388D20070C39A /* M2DAPIGatekeeper.app */,
-				6003F5AE195388D20070C39A /* M2DAPIGatekeeper.xctest */,
+				E99ACDE51A164604001FEB35 /* M2DAPIGatekeeper.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,25 +86,6 @@
 				12D3A1196A128F24FA301A50 /* libPods-M2DAPIGatekeeper.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6003F5B5195388D20070C39A /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
-				6003F5B6195388D20070C39A /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		6003F5B6195388D20070C39A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5B7195388D20070C39A /* Tests-Info.plist */,
-				6003F5B8195388D20070C39A /* InfoPlist.strings */,
-				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
@@ -218,26 +184,44 @@
 			path = "NSMutableURLRequest+HTTPMethod";
 			sourceTree = "<group>";
 		};
+		E99ACDE61A164604001FEB35 /* M2DAPIGatekeeperTest */ = {
+			isa = PBXGroup;
+			children = (
+				E99ACDE91A164604001FEB35 /* M2DAPIGatekeeperTest.m */,
+				E99ACDE71A164604001FEB35 /* Supporting Files */,
+			);
+			name = M2DAPIGatekeeperTest;
+			path = M2DAPIGatekeeper;
+			sourceTree = "<group>";
+		};
+		E99ACDE71A164604001FEB35 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E99ACDE81A164604001FEB35 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6003F5AD195388D20070C39A /* M2DAPIGatekeeper */ = {
+		E99ACDE41A164604001FEB35 /* M2DAPIGatekeeper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "M2DAPIGatekeeper" */;
+			buildConfigurationList = E99ACDEB1A164604001FEB35 /* Build configuration list for PBXNativeTarget "M2DAPIGatekeeper" */;
 			buildPhases = (
-				FC653E5FB3F7BE229677F0AD /* Check Pods Manifest.lock */,
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-				313E14D0A78D958A541B4CBB /* Copy Pods Resources */,
+				2E2130E4D7CFC001340C0756 /* Check Pods Manifest.lock */,
+				E99ACDE11A164604001FEB35 /* Sources */,
+				E99ACDE21A164604001FEB35 /* Frameworks */,
+				E99ACDE31A164604001FEB35 /* Resources */,
+				1A5242F512D869B9EA9D4758 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = M2DAPIGatekeeper;
-			productName = M2DAPIGatekeeperTests;
-			productReference = 6003F5AE195388D20070C39A /* M2DAPIGatekeeper.xctest */;
+			productName = M2DAPIGatekeeper;
+			productReference = E99ACDE51A164604001FEB35 /* M2DAPIGatekeeper.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -250,8 +234,8 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Akira Matsuda";
 				TargetAttributes = {
-					6003F5AD195388D20070C39A = {
-						TestTargetID = 6003F589195388D20070C39A;
+					E99ACDE41A164604001FEB35 = {
+						CreatedOnToolsVersion = 6.1;
 					};
 				};
 			};
@@ -268,24 +252,23 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6003F5AD195388D20070C39A /* M2DAPIGatekeeper */,
+				E99ACDE41A164604001FEB35 /* M2DAPIGatekeeper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6003F5AC195388D20070C39A /* Resources */ = {
+		E99ACDE31A164604001FEB35 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		313E14D0A78D958A541B4CBB /* Copy Pods Resources */ = {
+		1A5242F512D869B9EA9D4758 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -300,7 +283,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-M2DAPIGatekeeper/Pods-M2DAPIGatekeeper-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FC653E5FB3F7BE229677F0AD /* Check Pods Manifest.lock */ = {
+		2E2130E4D7CFC001340C0756 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -318,32 +301,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6003F5AA195388D20070C39A /* Sources */ = {
+		E99ACDE11A164604001FEB35 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9876C3419DBA90000A498F3 /* NSMutableURLRequest+M2DFileUpload.m in Sources */,
-				E9876C3119DBA90000A498F3 /* M2DAPIRequest.m in Sources */,
-				E9876C3219DBA90000A498F3 /* M2DURLConnectionOperation.m in Sources */,
-				E9876C3519DBA90000A498F3 /* NSMutableURLRequest+M2DHTTPMethod.m in Sources */,
-				E9876C3319DBA90000A498F3 /* M2DNSURLConnectionExtensionConstant.m in Sources */,
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
-				E9876C3019DBA90000A498F3 /* M2DAPIGatekeeper.m in Sources */,
+				E99ACDEA1A164604001FEB35 /* M2DAPIGatekeeperTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		6003F5B8195388D20070C39A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6003F5B9195388D20070C39A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6003F5BD195388D20070C39A /* Debug */ = {
@@ -418,43 +384,41 @@
 			};
 			name = Release;
 		};
-		6003F5C3195388D20070C39A /* Debug */ = {
+		E99ACDEC1A164604001FEB35 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE36EA39BA7DC2A71940E5ED /* Pods-M2DAPIGatekeeper.debug.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				INFOPLIST_FILE = M2DAPIGatekeeper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		6003F5C4195388D20070C39A /* Release */ = {
+		E99ACDED1A164604001FEB35 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2089528CD7581F8EEB61297 /* Pods-M2DAPIGatekeeper.release.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				INFOPLIST_FILE = M2DAPIGatekeeper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -470,11 +434,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "M2DAPIGatekeeper" */ = {
+		E99ACDEB1A164604001FEB35 /* Build configuration list for PBXNativeTarget "M2DAPIGatekeeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6003F5C3195388D20070C39A /* Debug */,
-				6003F5C4195388D20070C39A /* Release */,
+				E99ACDEC1A164604001FEB35 /* Debug */,
+				E99ACDED1A164604001FEB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

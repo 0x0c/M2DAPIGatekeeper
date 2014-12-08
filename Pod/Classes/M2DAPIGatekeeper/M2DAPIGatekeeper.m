@@ -249,7 +249,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		}];
 		[self setParseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
 			NSError *e = nil;
-			id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
+			id parsedObject = data != nil ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e] : nil;
 			if (e != nil) {
 				*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
 			}
