@@ -292,9 +292,9 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 
 - (void)configureParams:(M2DAPIRequest *)request
 {
-	if (self.baseParameter) {
+	if (self.baseParameterBlock) {
 		NSMutableDictionary *p = [request.requestParametors mutableCopy];
-		[p addEntriesFromDictionary:self.baseParameter];
+		self.baseParameterBlock(request, p);
 		[request parametors:p];
 	}
 	if (request.requestParametors) {

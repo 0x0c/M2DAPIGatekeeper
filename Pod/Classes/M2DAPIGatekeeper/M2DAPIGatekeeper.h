@@ -17,10 +17,10 @@ extern NSString *const M2DHTTPMethodGET;
 @property (nonatomic, assign) BOOL debugMode;
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;
 @property (nonatomic, readonly) NSArray *requestIdentifiers;
-@property (nonatomic, copy) NSDictionary *baseParameter;
 @property (nonatomic, copy) void (^didRequestIdentifierPushBlock)(NSString *identifier);
 @property (nonatomic, copy) void (^didRequestIdentifierPopBlock)(NSArray *identifiers);
 
+@property (nonatomic, copy) void (^baseParameterBlock)(M2DAPIRequest *request, NSMutableDictionary *params);
 @property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request, NSDictionary *params);
 @property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
