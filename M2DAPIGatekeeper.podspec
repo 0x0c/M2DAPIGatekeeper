@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "M2DAPIGatekeeper"
-  s.version          = "0.2.8"
+  s.version          = "0.2.9"
   s.summary          = "Simple API networking framework."
   s.description      = <<-DESC
 							Simple API networking framework.
@@ -25,6 +25,6 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*.{h,m}'
 
-  s.public_header_files = 'Pod/Classes/M2DAPIGatekeeper/*.h', 'Pod/Classes/M2DAPIRequest/*.h'
+  s.public_header_files = 'Pod/Classes/M2DAPIGatekeeper/*.h', 'Pod/Classes/M2DAPIRequest/*.h', 'Pod/Classes/M2DURLConnectionOperation/*.h', 'Pod/Classes/NSURLConnectionExtension/*.h'
   s.frameworks = 'UIKit', 'QuartzCore'
 end
