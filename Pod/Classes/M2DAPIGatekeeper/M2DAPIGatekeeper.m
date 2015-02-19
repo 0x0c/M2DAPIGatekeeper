@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		self.initializeBlock(request, request.requestParametors);
 	}
 	
-	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject) = self.finalizeBlock;
+	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData) = self.finalizeBlock;
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
 		NSError *finalError = error;
 		id parsedObject = nil;
@@ -92,7 +92,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			request.finalizeBlock(request, parsedObject, finalError);
 		}
 		if (finalizeBlock) {
-			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, data);
 		}
 		
 		if (_debugMode) {
@@ -110,13 +110,17 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	if (request.willSendAsynchronous) {
 		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
-			[identifiers_ removeObject:identifier];
+			@synchronized(identifiers_) {
+				[identifiers_ removeObject:identifier];
+			}
 		}];
 		if (request.progressBlock) {
 			[op setProgressBlock:request.progressBlock];
 		}
 		identifier = [op sendRequest];
-		[identifiers_ addObject:identifier];
+		@synchronized(identifiers_) {
+			[identifiers_ addObject:identifier];
+		}
 		if (self.didRequestIdentifierPushBlock) {
 			self.didRequestIdentifierPushBlock(identifier);
 		}
@@ -178,7 +182,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		request.finalizeBlock(request, parsedObject, finalError);
 	}
 	if (self.finalizeBlock) {
-		self.finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+		self.finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, data);
 	}
 	
 	return parsedObject;
@@ -206,13 +210,17 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	NSString *identifier = nil;
 	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
 		handler(data, response, error);
-		[identifiers_ removeObject:identifier];
+		@synchronized(identifiers_) {
+			[identifiers_ removeObject:identifier];
+		}
 	}];
 	if (request.progressBlock) {
 		[op setProgressBlock:request.progressBlock];
 	}
 	identifier = [op sendRequest];
-	[identifiers_ addObject:identifier];
+	@synchronized(identifiers_) {
+		[identifiers_ addObject:identifier];
+	}
 	if (self.didRequestIdentifierPushBlock) {
 		self.didRequestIdentifierPushBlock(identifier);
 	}

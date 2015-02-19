@@ -22,7 +22,7 @@ extern NSString *const M2DHTTPMethodGET;
 
 @property (nonatomic, copy) void (^baseParameterBlock)(M2DAPIRequest *request, NSMutableDictionary *params);
 @property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request, NSDictionary *params);
-@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
+@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData);
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
 @property (nonatomic, copy) BOOL (^resultConditionBlock)(NSURLResponse *response, id parsedObject, NSError **error);
 
