@@ -97,8 +97,8 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		
 		if (_debugMode) {
 			__autoreleasing NSString *r = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 			NSLog(@"raw result:[%lu][%@://%@%@]%@", (long)[(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
+			NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 		}
 	};
 	
@@ -135,7 +135,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return identifier;
 }
 
-- (NSDictionary *)sendSynchronousRequest:(M2DAPIRequest *)request
+- (id)sendSynchronousRequest:(M2DAPIRequest *)request
 {
 	[self configureParams:request];
 	[self configureHandler:request];
@@ -174,8 +174,8 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	
 	if (_debugMode) {
 		__autoreleasing NSString *r = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 		NSLog(@"raw result:[%lu][%@://%@%@]%@", (long)[(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
+		NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 	}
 	
 	if (request.finalizeBlock) {

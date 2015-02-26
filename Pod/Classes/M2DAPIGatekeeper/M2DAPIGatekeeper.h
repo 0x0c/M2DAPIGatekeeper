@@ -29,7 +29,7 @@ extern NSString *const M2DHTTPMethodGET;
 + (instancetype)sharedInstance;
 - (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag;
 - (NSString *)sendRequest:(M2DAPIRequest *)request;
-- (NSDictionary *)sendSynchronousRequest:(M2DAPIRequest *)request;
+- (id)sendSynchronousRequest:(M2DAPIRequest *)request;
 - (NSString *)sendAsynchronousRequest:(M2DAPIRequest *)request;
 - (NSData *)getRawData:(M2DAPIRequest *)request;
 - (NSString *)getRawDataAsynchronous:(M2DAPIRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))handler;
