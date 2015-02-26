@@ -130,7 +130,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			@synchronized(identifiers_) {
 				[identifiers_ removeObject:identifier];
 			}
-			if (bself.showNetworkActivityIndicator && br.incrementNetworkActivityIndicatorCount) {
+			if (bself.showNetworkActivityIndicator && br.showNetworkActivityIndicator) {
 				[[self class] setNetworkActivityIndicatorVisible:NO];
 			}
 		}];
