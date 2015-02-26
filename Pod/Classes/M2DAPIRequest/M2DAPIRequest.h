@@ -24,6 +24,7 @@
 - (instancetype)inProgress:(void (^)(CGFloat progress))progressBlock;
 
 @property (nonatomic, assign) BOOL willSendAsynchronous;
+@property (nonatomic, assign) BOOL incrementNetworkActivityIndicatorCount;
 @property (nonatomic, readonly) NSString *httpMethod;
 @property (nonatomic, readonly) NSString *identifier;
 @property (nonatomic, readonly) NSDictionary *requestParametors;

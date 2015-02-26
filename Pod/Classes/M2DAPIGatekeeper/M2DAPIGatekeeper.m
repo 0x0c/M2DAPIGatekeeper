@@ -39,6 +39,18 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return sharedInstance;
 }
 
++ (void)setNetworkActivityIndicatorVisible:(BOOL)setVisible
+{
+	static NSInteger connectionCount = 0;
+	if (setVisible) {
+		connectionCount++;
+	}
+	else {
+		connectionCount--;
+	}
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(connectionCount > 0)];
+}
+
 - (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag
 {
 	M2DAPIRequest *req = nil;
@@ -106,12 +118,19 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSLog(@"post:[%@]%@", [request.URL absoluteString], [request.requestParametors description]);
 	}
 	
+	if (request.incrementNetworkActivityIndicatorCount) {
+		[[self class] setNetworkActivityIndicatorVisible:YES];
+	}
 	NSString *identifier = nil;
 	if (request.willSendAsynchronous) {
+		__weak typeof(request) br = request;
 		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
 			@synchronized(identifiers_) {
 				[identifiers_ removeObject:identifier];
+			}
+			if (br.incrementNetworkActivityIndicatorCount) {
+				[[self class] setNetworkActivityIndicatorVisible:NO];
 			}
 		}];
 		if (request.progressBlock) {
@@ -130,6 +149,9 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSURLResponse *response = nil;
 		NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
 		f(response, data, error);
+		if (request.incrementNetworkActivityIndicatorCount) {
+			[[self class] setNetworkActivityIndicatorVisible:NO];
+		}
 	}
 	
 	return identifier;
