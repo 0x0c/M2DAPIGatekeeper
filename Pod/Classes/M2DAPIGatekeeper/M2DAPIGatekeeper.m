@@ -118,18 +118,19 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSLog(@"post:[%@]%@", [request.URL absoluteString], [request.requestParametors description]);
 	}
 	
-	if (request.incrementNetworkActivityIndicatorCount) {
+	if (self.showNetworkActivityIndicator && request.showNetworkActivityIndicator) {
 		[[self class] setNetworkActivityIndicatorVisible:YES];
 	}
 	NSString *identifier = nil;
 	if (request.willSendAsynchronous) {
+		__weak typeof(self) bself = self;
 		__weak typeof(request) br = request;
 		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
 			@synchronized(identifiers_) {
 				[identifiers_ removeObject:identifier];
 			}
-			if (br.incrementNetworkActivityIndicatorCount) {
+			if (bself.showNetworkActivityIndicator && br.incrementNetworkActivityIndicatorCount) {
 				[[self class] setNetworkActivityIndicatorVisible:NO];
 			}
 		}];
@@ -149,7 +150,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSURLResponse *response = nil;
 		NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
 		f(response, data, error);
-		if (request.incrementNetworkActivityIndicatorCount) {
+		if (self.showNetworkActivityIndicator && request.showNetworkActivityIndicator) {
 			[[self class] setNetworkActivityIndicatorVisible:NO];
 		}
 	}

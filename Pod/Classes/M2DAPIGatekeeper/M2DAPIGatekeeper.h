@@ -14,6 +14,7 @@ extern NSString *const M2DHTTPMethodGET;
 
 @interface M2DAPIGatekeeper : NSObject
 
+@property (nonatomic, assign) BOOL showNetworkActivityIndicator;
 @property (nonatomic, assign) BOOL debugMode;
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;
 @property (nonatomic, readonly) NSArray *requestIdentifiers;

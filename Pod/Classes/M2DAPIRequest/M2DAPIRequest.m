@@ -60,6 +60,7 @@
 {
 	self = [super initWithURL:URL];
 	if (self) {
+		_showNetworkActivityIndicator = YES;
 		_identifier = [[NSProcessInfo processInfo] globallyUniqueString];
 		_requestParametors = @{};
 	}
