@@ -10,6 +10,19 @@
 
 static dispatch_queue_t globalConnectionQueue;
 
+@interface M2DURLConnectionOperation ()
+{
+	void (^completeBlock_)(NSURLResponse *response, NSData *data, NSError *error);
+	void (^progressBlock_)(CGFloat progress);
+	CGFloat dataLength_;
+	NSMutableData *data_;
+	NSURLConnection *connection_;
+	NSURLResponse *response_;
+	BOOL executing_;
+}
+
+@end
+
 @implementation M2DURLConnectionOperation
 
 + (void)globalStop:(NSString *)identifier
@@ -32,7 +45,7 @@ static dispatch_queue_t globalConnectionQueue;
 {
 	self = [super init];
 	if (self) {
-		_identifier = [[NSProcessInfo processInfo] globallyUniqueString];
+		_identifier = [NSString stringWithFormat:@"%p", self];
 	}
 	
 	return self;

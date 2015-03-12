@@ -18,15 +18,6 @@
 @end
 
 @interface M2DURLConnectionOperation : NSObject <NSURLConnectionDataDelegate>
-{
-	void (^completeBlock_)(NSURLResponse *response, NSData *data, NSError *error);
-	void (^progressBlock_)(CGFloat progress);
-	CGFloat dataLength_;
-	NSMutableData *data_;
-	NSURLConnection *connection_;
-	NSURLResponse *response_;
-	BOOL executing_;
-}
 
 @property id<M2DURLConnectionOperationDelegate> delegate;
 @property (nonatomic, readonly) NSURLRequest *request;
@@ -34,8 +25,8 @@
 
 + (void)globalStop:(NSString *)identifier;
 - (void)stop;
-- (id)initWithRequest:(NSURLRequest *)request;
-- (id)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
+- (instancetype)initWithRequest:(NSURLRequest *)request;
+- (instancetype)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
 - (void)setProgressBlock:(void (^)(CGFloat progress))progressBlock;
 - (NSString *)sendRequest;
 - (NSString *)sendRequestWithCompleteBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
