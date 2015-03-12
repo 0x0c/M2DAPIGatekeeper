@@ -102,7 +102,7 @@ static dispatch_queue_t globalConnectionQueue;
 - (void)stop
 {
 	[connection_ cancel];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:_identifier object:nil];
+	[self finish];
 }
 
 - (void)setProgressBlock:(void (^)(CGFloat progress))progressBlock
