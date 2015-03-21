@@ -109,13 +109,13 @@
 	return self;
 }
 
-- (instancetype)resultCondition:(BOOL (^)(NSURLResponse *, id, NSError *__autoreleasing *))resultConditionBlock
+- (instancetype)resultCondition:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error))resultConditionBlock
 {
 	self.resultConditionBlock = resultConditionBlock;
 	return self;
 }
 
-- (instancetype)initialize:(void (^)(M2DAPIRequest *))initializeBlock
+- (instancetype)initialize:(void (^)(M2DAPIRequest *request))initializeBlock
 {
 	self.initializeBlock = initializeBlock;
 	return self;

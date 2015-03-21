@@ -78,6 +78,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	
 	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData) = self.finalizeBlock;
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
+		request.response = response;
 		NSError *finalError = error;
 		id parsedObject = nil;
 		if (error) {
@@ -149,6 +150,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSError *error = nil;
 		NSURLResponse *response = nil;
 		NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
+		request.response = response;
 		f(response, data, error);
 		if (self.showNetworkActivityIndicator && request.showNetworkActivityIndicator) {
 			[[self class] setNetworkActivityIndicatorVisible:NO];
@@ -174,6 +176,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	NSError *error = nil;
 	NSURLResponse *response = nil;
 	NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
+	request.response = response;
 	finalError = error;
 	id parsedObject = nil;
 	if (error) {

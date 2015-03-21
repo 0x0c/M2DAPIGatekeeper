@@ -28,6 +28,7 @@
 @property (nonatomic, readonly) NSString *httpMethod;
 @property (nonatomic, readonly) NSString *identifier;
 @property (nonatomic, readonly) NSDictionary *requestParametors;
+@property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic, strong) NSDictionary *userInfo;
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
 @property (nonatomic, copy) BOOL (^resultConditionBlock)(NSURLResponse *response, id parsedObject, NSError **error);
