@@ -18,7 +18,7 @@
 - (instancetype)whenSucceeded:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock;
 - (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock;
 - (instancetype)parseAlgorithm:(id (^)(NSData *data, NSError **error))parseBlock;
-- (instancetype)resultCondition:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock;
+- (instancetype)resultCondition:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock;
 - (instancetype)initialize:(void (^)(M2DAPIRequest *request))initializeBlock;
 - (instancetype)finalize:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock;
 - (instancetype)inProgress:(void (^)(CGFloat progress))progressBlock;

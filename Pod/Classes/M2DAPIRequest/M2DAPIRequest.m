@@ -109,7 +109,7 @@
 	return self;
 }
 
-- (instancetype)resultCondition:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error))resultConditionBlock
+- (instancetype)resultCondition:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error))resultConditionBlock
 {
 	self.resultConditionBlock = resultConditionBlock;
 	return self;
