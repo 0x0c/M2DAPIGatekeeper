@@ -18,6 +18,7 @@ extern NSString *const M2DHTTPMethodGET;
 @property (nonatomic, assign) BOOL debugMode;
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;
 @property (nonatomic, readonly) NSArray *requestIdentifiers;
+@property (nonatomic, strong) BOOL (^reachabilityCondition)(M2DAPIRequest *request);
 @property (nonatomic, copy) void (^didRequestIdentifierPushBlock)(NSString *identifier);
 @property (nonatomic, copy) void (^didRequestIdentifierPopBlock)(NSArray *identifiers);
 

@@ -72,6 +72,10 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	[self configureParams:request];
 	[self configureHandler:request];
 	
+	if (self.reachabilityCondition && self.reachabilityCondition(request) == NO) {
+		return nil;
+	}
+	
 	if (self.initializeBlock) {
 		self.initializeBlock(request, request.requestParametors);
 	}
