@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			parsedObject = request.parseBlock(data, &e);
 			finalError = e;
 			NSError *e2 = nil;
-			BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+			BOOL result = request.resultConditionBlock(request, response, parsedObject, &e2);
 			finalError = e2;
 			if (result && finalError == nil && request.successBlock) {
 				request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
@@ -188,7 +188,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		__autoreleasing NSError *e = nil;
 		parsedObject = request.parseBlock(data, &e);
 		NSError *e2 = nil;
-		BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+		BOOL result = request.resultConditionBlock(request, response, parsedObject, &e2);
 		finalError = e2;
 		if (result && finalError == nil && request.successBlock) {
 			request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
@@ -274,7 +274,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		identifiers_ = [NSMutableArray new];
 		_timeoutInterval = 30.0;
 		_debugMode = NO;
-		[self setResultConditionBlock:^BOOL(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
+		[self setResultConditionBlock:^BOOL(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
 			BOOL result = [(NSHTTPURLResponse *)response statusCode] == 200 ? YES : NO;
 			if (*error != NULL && result == NO) {
 				*error = [NSError errorWithDomain:@"API result failure." code:M2DAPIGatekeeperResultFailure userInfo:nil];

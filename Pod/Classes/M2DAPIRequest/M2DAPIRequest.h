@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic, strong) NSDictionary *userInfo;
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
-@property (nonatomic, copy) BOOL (^resultConditionBlock)(NSURLResponse *response, id parsedObject, NSError **error);
+@property (nonatomic, copy) BOOL (^resultConditionBlock)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error);
 @property (nonatomic, copy) void (^successBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
 @property (nonatomic, copy) void (^failureBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
 @property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request);
