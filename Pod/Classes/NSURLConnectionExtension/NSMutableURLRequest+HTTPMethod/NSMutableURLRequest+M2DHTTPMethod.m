@@ -12,7 +12,6 @@
 
 - (void)m2d_setParameter:(NSDictionary *)params method:(NSString *)method
 {
-	[self setHTTPShouldUsePipelining:YES];
 	NSMutableString *parameterString = [NSMutableString new];
 	[params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		if (parameterString.length > 0) {
