@@ -228,7 +228,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return [self sendRequest:request];
 }
 
-- (NSData *)getRawData:(M2DAPIRequest *)request
+- (NSData *)rawDataWithRequest:(M2DAPIRequest *)request
 {
 	[self configureParams:request];
 	NSError *error = nil;
@@ -238,7 +238,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return data;
 }
 
-- (NSString *)getRawDataAsynchronous:(M2DAPIRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))handler
+- (NSString *)rawDataWithAsynchronousRequest:(M2DAPIRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))handler
 {
 	[self configureParams:request];
 	NSString *identifier = nil;
@@ -268,7 +268,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return self;
 }
 
-- (instancetype)resultConditionBlock:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock
+- (instancetype)resultConditionBlock:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock
 {
 	_resultConditionBlock = [resultConditionBlock copy];
 	return self;
