@@ -72,15 +72,27 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	[self configureParams:request];
 	[self configureHandler:request];
 	
-	if (self.reachabilityCondition && self.reachabilityCondition(request) == NO) {
-		return nil;
-	}
-	
+	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData) = self.finalizeBlock;
+
 	if (self.initializeBlock) {
 		self.initializeBlock(request, request.requestParametors);
 	}
 	
-	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData) = self.finalizeBlock;
+	if (self.reachabilityCondition && self.reachabilityCondition(request) == NO) {
+		NSError *e = [NSError errorWithDomain:@"No internet connection" code:100 userInfo:nil];
+		if (request.failureBlock) {
+			request.failureBlock(request, 0, nil, e);
+		}
+		if (request.finalizeBlock) {
+			request.finalizeBlock(request, nil, nil);
+		}
+		if (finalizeBlock) {
+			finalizeBlock(request, 0, nil, nil);
+		}
+		
+		return nil;
+	}
+	
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
 		request.response = response;
 		NSError *finalError = error;
@@ -108,7 +120,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		}
 		
 		if (request.finalizeBlock) {
-			request.finalizeBlock(request, parsedObject, finalError);
+			request.finalizeBlock(request, parsedObject, nil);
 		}
 		if (finalizeBlock) {
 			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, data);
