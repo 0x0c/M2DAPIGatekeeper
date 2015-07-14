@@ -81,13 +81,13 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	if (self.reachabilityCondition && self.reachabilityCondition(request) == NO) {
 		NSError *e = [NSError errorWithDomain:@"No internet connection" code:100 userInfo:nil];
 		if (request.failureBlock) {
-			request.failureBlock(request, 0, nil, e);
+			request.failureBlock(request, nil, nil, e);
 		}
 		if (request.finalizeBlock) {
 			request.finalizeBlock(request, nil, nil);
 		}
 		if (finalizeBlock) {
-			finalizeBlock(request, 0, nil, nil);
+			finalizeBlock(request, nil, nil, nil);
 		}
 		
 		return nil;
