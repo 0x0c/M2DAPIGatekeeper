@@ -8,7 +8,7 @@
 
 #import "M2DURLConnectionOperation.h"
 
-static dispatch_queue_t globalConnectionQueue;
+static NSOperationQueue *globalConnectionQueue;
 
 @interface M2DURLConnectionOperation ()
 {
@@ -35,7 +35,7 @@ static dispatch_queue_t globalConnectionQueue;
 {
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		globalConnectionQueue = dispatch_queue_create("M2DURLConnectionOperationGlobalConnectionQueue", NULL);
+		globalConnectionQueue = [NSOperationQueue new];
 	});
 	
 	return globalConnectionQueue;
