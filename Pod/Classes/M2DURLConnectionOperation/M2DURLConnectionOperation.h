@@ -27,10 +27,10 @@
 + (void)globalStop:(NSString *)identifier;
 - (void)stop;
 - (instancetype)initWithRequest:(NSURLRequest *)request;
-- (instancetype)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
+- (instancetype)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock;
 - (void)setProgressBlock:(void (^)(CGFloat progress))progressBlock;
 - (NSString *)sendRequest;
-- (NSString *)sendRequestWithCompleteBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
-- (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock;
+- (NSString *)sendRequestWithCompleteBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock;
+- (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock;
 
 @end

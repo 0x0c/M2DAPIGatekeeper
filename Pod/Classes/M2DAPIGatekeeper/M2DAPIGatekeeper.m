@@ -144,7 +144,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	if (request.willSendAsynchronous) {
 		__weak typeof(self) bself = self;
 		__weak typeof(request) br = request;
-		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
+		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
 			@synchronized(identifiers_) {
 				[identifiers_ removeObject:identifier];
@@ -254,7 +254,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 {
 	[self configureParams:request];
 	NSString *identifier = nil;
-	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
+	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 		handler(data, response, error);
 		@synchronized(identifiers_) {
 			[identifiers_ removeObject:identifier];

@@ -12,7 +12,7 @@ static NSOperationQueue *globalConnectionQueue;
 
 @interface M2DURLConnectionOperation ()
 {
-	void (^completeBlock_)(NSURLResponse *response, NSData *data, NSError *error);
+	void (^completeBlock_)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error);
 	void (^progressBlock_)(CGFloat progress);
 	CGFloat dataLength_;
 	NSMutableData *data_;
@@ -31,7 +31,7 @@ static NSOperationQueue *globalConnectionQueue;
 	[[NSNotificationCenter defaultCenter] postNotification:n];
 }
 
-+ (dispatch_queue_t)globalConnectionQueue
++ (NSOperationQueue *)globalConnectionQueue
 {
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
@@ -62,7 +62,7 @@ static NSOperationQueue *globalConnectionQueue;
 	return self;
 }
 
-- (id)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock
+- (id)initWithRequest:(NSURLRequest *)request completeBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock
 {
 	self = [self initWithRequest:request];
 	if (self) {
@@ -99,11 +99,11 @@ static NSOperationQueue *globalConnectionQueue;
 {
 	[self.delegate connectionOperationDidComplete:self session:session task:task error:error];
 	if (error) {
-		completeBlock_(response_, nil, error);
+		completeBlock_(self, response_, nil, error);
 	}
 	else {
 		if (completeBlock_) {
-			completeBlock_(response_, data_, nil);
+			completeBlock_(self, response_, data_, nil);
 		}
 	}
 	[self finish];
@@ -127,12 +127,12 @@ static NSOperationQueue *globalConnectionQueue;
 	return [self sendRequestWithCompleteBlock:completeBlock_];
 }
 
-- (NSString *)sendRequestWithCompleteBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock
+- (NSString *)sendRequestWithCompleteBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock
 {
 	return [self sendRequest:_request completeBlock:completeBlock];
 }
 
-- (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock
+- (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock
 {
 	completeBlock_ = [completeBlock copy];
 	NSURLSession *session = [NSURLSession sessionWithConfiguration:self.configuration delegate:self delegateQueue:[[self class] globalConnectionQueue]];
