@@ -87,9 +87,6 @@ static NSOperationQueue *globalConnectionQueue;
 	completionHandler(NSURLSessionResponseAllow);
 }
 
-/**
- * HTTPリクエストのデリゲートメソッド(受信の度に実行)
- */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
 {
 	[data_ appendData:data];
@@ -98,9 +95,6 @@ static NSOperationQueue *globalConnectionQueue;
 	}
 }
 
-/**
- * HTTPリクエストのデリゲートメソッド(完了処理)
- */
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
 	[self.delegate connectionOperationDidComplete:self session:session task:task error:error];
