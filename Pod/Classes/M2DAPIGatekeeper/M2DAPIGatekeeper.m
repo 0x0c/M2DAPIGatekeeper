@@ -290,6 +290,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 {
 	self = [super init];
 	if (self) {
+		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		queue_ = [[NSOperationQueue alloc] init];
 		identifiers_ = [NSMutableArray new];
 		_timeoutInterval = 30.0;

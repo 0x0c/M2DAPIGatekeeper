@@ -16,7 +16,7 @@ static dispatch_queue_t globalConnectionQueue;
 	void (^progressBlock_)(CGFloat progress);
 	CGFloat dataLength_;
 	NSMutableData *data_;
-	NSURLConnection *connection_;
+	NSURLSessionDataTask *task_;
 	NSURLResponse *response_;
 	BOOL executing_;
 }
@@ -45,6 +45,7 @@ static dispatch_queue_t globalConnectionQueue;
 {
 	self = [super init];
 	if (self) {
+		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		_identifier = [NSString stringWithFormat:@"%p", self];
 	}
 	
@@ -76,9 +77,20 @@ static dispatch_queue_t globalConnectionQueue;
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:_identifier object:nil];
 }
 
-#pragma mark - NSURLConnectionDataDelegate
+#pragma mark - NSURLSessionDataDelegate
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
+{
+	response_ = response;
+	data_ = [[NSMutableData alloc] init];
+	dataLength_ = response.expectedContentLength;
+	completionHandler(NSURLSessionResponseAllow);
+}
+
+/**
+ * HTTPリクエストのデリゲートメソッド(受信の度に実行)
+ */
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
 {
 	[data_ appendData:data];
 	if (progressBlock_) {
@@ -86,27 +98,20 @@ static dispatch_queue_t globalConnectionQueue;
 	}
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+/**
+ * HTTPリクエストのデリゲートメソッド(完了処理)
+ */
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
-	response_ = response;
-	data_ = [[NSMutableData alloc] init];
-	dataLength_ = response.expectedContentLength;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	if (completeBlock_) {
-		completeBlock_(response_, data_, nil);
+	[self.delegate connectionOperationDidComplete:self session:session task:task error:error];
+	if (error) {
+		completeBlock_(response_, nil, error);
 	}
-	if ([self.delegate respondsToSelector:@selector(connectionOperationDidComplete:connection:)]) {
-		[self.delegate connectionOperationDidComplete:self connection:(NSURLConnection *)connection];
+	else {
+		if (completeBlock_) {
+			completeBlock_(response_, data_, nil);
+		}
 	}
-	[self finish];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	completeBlock_(response_, nil, error);
 	[self finish];
 }
 
@@ -114,7 +119,7 @@ static dispatch_queue_t globalConnectionQueue;
 
 - (void)stop
 {
-	[connection_ cancel];
+	[task_ cancel];
 	[self finish];
 }
 
@@ -136,16 +141,10 @@ static dispatch_queue_t globalConnectionQueue;
 - (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completeBlock
 {
 	completeBlock_ = [completeBlock copy];
-	connection_ = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+	NSURLSession *session = [NSURLSession sessionWithConfiguration:self.configuration delegate:self delegateQueue:[[self class] globalConnectionQueue]];
+	task_ = [session dataTaskWithRequest:request];
+	[task_ resume];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:_identifier object:nil];
-	
-	executing_ = YES;
-	dispatch_async([[self class] globalConnectionQueue], ^{
-		[connection_ start];
-		do {
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (executing_);
-	});
 	
 	return _identifier;
 }
@@ -153,7 +152,7 @@ static dispatch_queue_t globalConnectionQueue;
 - (void)finish
 {
 	executing_ = NO;
-	[[NSNotificationCenter defaultCenter] removeObserver:connection_ name:_identifier object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:_identifier object:nil];
 }
 
 @end
