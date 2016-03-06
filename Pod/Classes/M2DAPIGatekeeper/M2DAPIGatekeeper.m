@@ -17,10 +17,9 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 };
 
 @interface M2DAPIGatekeeper ()
-{
-	NSMutableArray *identifiers_;
-	NSOperationQueue *queue_;
-}
+
+@property (nonatomic, strong) NSMutableArray *identifiers;
+@property (nonatomic, strong) NSOperationQueue *queue;
 
 @end
 
@@ -147,7 +146,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
 			@synchronized(identifiers_) {
-				[identifiers_ removeObject:identifier];
+				[self.identifiers removeObject:identifier];
 			}
 			if (bself.showNetworkActivityIndicator && br.showNetworkActivityIndicator) {
 				[[self class] setNetworkActivityIndicatorVisible:NO];
@@ -158,7 +157,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		}
 		identifier = [op sendRequest];
 		@synchronized(identifiers_) {
-			[identifiers_ addObject:identifier];
+			[self.identifiers addObject:identifier];
 		}
 		if (self.didRequestIdentifierPushBlock) {
 			self.didRequestIdentifierPushBlock(identifier);
@@ -257,7 +256,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 		handler(data, response, error);
 		@synchronized(identifiers_) {
-			[identifiers_ removeObject:identifier];
+			[self.identifiers removeObject:identifier];
 		}
 	}];
 	if (request.progressBlock) {
@@ -265,7 +264,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	}
 	identifier = [op sendRequest];
 	@synchronized(identifiers_) {
-		[identifiers_ addObject:identifier];
+		[self.identifiers addObject:identifier];
 	}
 	if (self.didRequestIdentifierPushBlock) {
 		self.didRequestIdentifierPushBlock(identifier);
@@ -291,7 +290,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	self = [super init];
 	if (self) {
 		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-		queue_ = [[NSOperationQueue alloc] init];
+		self.queue = [[NSOperationQueue alloc] init];
 		identifiers_ = [NSMutableArray new];
 		_timeoutInterval = 30.0;
 		_debugMode = NO;

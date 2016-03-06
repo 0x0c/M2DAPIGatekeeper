@@ -11,18 +11,10 @@
 #import "M2DNSURLConnectionExtensionConstant.h"
 
 @interface M2DAPIRequest ()
-{
-	BOOL (^resultConditionBlock_)(NSURLResponse *response, id parsedObject);
-	void (^successBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
-	void (^failureBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
-}
 
 @end
 
 @implementation M2DAPIRequest
-
-@synthesize successBlock = successBlock_;
-@synthesize failureBlock = failureBlock_;
 
 #pragma mark - Override
 
@@ -68,12 +60,12 @@
 	return self;
 }
 
-- (instancetype)initWithURL:(NSURL *)url successBlock:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failureBlock:(void (^)(M2DAPIRequest *request, NSError *error))failureBlock
+- (instancetype)initWithURL:(NSURL *)url successBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failureBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock
 {
 	self = [self initWithURL:url];
 	if (self) {
-		successBlock_ = [successBlock copy];
-		failureBlock_ = [failureBlock copy];
+		self.successBlock = successBlock;
+		self.failureBlock = failureBlock;
 	}
 	
 	return self;
