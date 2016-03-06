@@ -16,7 +16,7 @@ static NSOperationQueue *globalConnectionQueue;
 @property (nonatomic, copy) void (^progressBlock)(CGFloat progress);
 @property (nonatomic, assign) BOOL executing;
 @property (nonatomic, assign) CGFloat dataLength;
-@property (nonatomic, copy) NSMutableData *data;
+@property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, copy) NSURLSessionDataTask *task;
 @property (nonatomic, copy) NSURLResponse *response;
 
@@ -44,7 +44,6 @@ static NSOperationQueue *globalConnectionQueue;
 {
 	self = [super init];
 	if (self) {
-		self.data = [NSMutableData new];
 		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		_identifier = [NSString stringWithFormat:@"%p", self];
 	}
