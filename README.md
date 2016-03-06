@@ -7,7 +7,7 @@
 
 ## Requirements
 
-- Runs on iOS 6.0 or later.
+- Runs on iOS 7.0 or later.
 
 ## Contribution
 
