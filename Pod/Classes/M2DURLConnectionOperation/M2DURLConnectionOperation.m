@@ -44,6 +44,7 @@ static NSOperationQueue *globalConnectionQueue;
 {
 	self = [super init];
 	if (self) {
+		self.data = [NSMutableData new];
 		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		_identifier = [NSString stringWithFormat:@"%p", self];
 	}
@@ -81,7 +82,7 @@ static NSOperationQueue *globalConnectionQueue;
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
 {
 	self.response = response;
-	self.data = [[NSMutableData alloc] init];
+	self.data = [NSMutableData new];
 	self.dataLength = response.expectedContentLength;
 	completionHandler(NSURLSessionResponseAllow);
 }
