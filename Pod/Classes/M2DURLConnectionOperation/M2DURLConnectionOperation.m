@@ -46,7 +46,6 @@ static NSOperationQueue *globalConnectionQueue;
 	if (self) {
 		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		_identifier = [NSString stringWithFormat:@"%p", self];
-		self.data = [NSMutableData new];
 	}
 	
 	return self;
@@ -108,6 +107,7 @@ static NSOperationQueue *globalConnectionQueue;
 	}
 	[self finish];
 	[session invalidateAndCancel];
+	self.data = nil;
 }
 
 #pragma mark -
