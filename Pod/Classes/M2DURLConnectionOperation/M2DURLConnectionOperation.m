@@ -106,6 +106,7 @@ static NSOperationQueue *globalConnectionQueue;
 		}
 	}
 	[self finish];
+	[session invalidateAndCancel];
 }
 
 #pragma mark -

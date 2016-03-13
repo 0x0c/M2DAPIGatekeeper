@@ -52,9 +52,9 @@
 {
 	self = [super initWithURL:URL];
 	if (self) {
-		_showNetworkActivityIndicator = YES;
+		self.showNetworkActivityIndicator = YES;
 		_identifier = [[NSProcessInfo processInfo] globallyUniqueString];
-		_requestParametors = @{};
+		self.requestParametors = @{};
 	}
 	
 	return self;
@@ -79,7 +79,7 @@
 
 - (instancetype)parametors:(NSDictionary *)params
 {
-	_requestParametors = [params copy];
+	self.requestParametors = params;
 	return self;
 }
 

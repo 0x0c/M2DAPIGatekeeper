@@ -25,9 +25,9 @@
 
 @property (nonatomic, assign) BOOL willSendAsynchronous;
 @property (nonatomic, assign) BOOL showNetworkActivityIndicator;
-@property (nonatomic, readonly) NSString *httpMethod;
+@property (nonatomic, strong) NSString *httpMethod;
 @property (nonatomic, readonly) NSString *identifier;
-@property (nonatomic, readonly) NSDictionary *requestParametors;
+@property (nonatomic, strong) NSDictionary *requestParametors;
 @property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic, strong) NSDictionary *userInfo;
 @property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
