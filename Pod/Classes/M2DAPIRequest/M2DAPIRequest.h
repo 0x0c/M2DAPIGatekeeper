@@ -11,31 +11,31 @@
 
 @interface M2DAPIRequest : NSMutableURLRequest
 
-+ (instancetype)GETRequest:(NSURL *)url;
-+ (instancetype)POSTRequest:(NSURL *)url;
-- (instancetype)asynchronousRequest;
-- (instancetype)parametors:(NSDictionary *)params;
-- (instancetype)whenSucceeded:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock;
-- (instancetype)whenFailed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock;
-- (instancetype)parseAlgorithm:(id (^)(NSData *data, NSError **error))parseBlock;
-- (instancetype)resultCondition:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock;
-- (instancetype)initialize:(void (^)(M2DAPIRequest *request))initializeBlock;
-- (instancetype)finalize:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))finalizeBlock;
-- (instancetype)inProgress:(void (^)(CGFloat progress))progressBlock;
++ (instancetype _Nonnull)GETRequest:(NSURL * _Nonnull)url;
++ (instancetype _Nonnull)POSTRequest:(NSURL * _Nonnull)url;
+- (instancetype _Nonnull)asynchronousRequest;
+- (instancetype _Nonnull)parametors:(NSDictionary * _Nullable)params;
+- (instancetype _Nonnull)whenSucceeded:(void (^_Nonnull)(M2DAPIRequest * _Nonnull request, NSDictionary * _Nullable httpHeaderFields, id _Nullable parsedObject))successBlock;
+- (instancetype _Nonnull)whenFailed:(void (^_Nonnull)(M2DAPIRequest * _Nonnull request, NSDictionary * _Nullable httpHeaderFields, id _Nullable parsedObject, NSError * _Nullable error))failureBlock;
+- (instancetype _Nonnull)parseAlgorithm:(id _Nullable (^_Nonnull)(NSData * _Nullable data, NSError * _Nonnull * _Nullable error))parseBlock;
+- (instancetype _Nonnull)resultCondition:(BOOL (^_Nonnull)(M2DAPIRequest * _Nonnull request, NSURLResponse * _Nullable response, id _Nullable parsedObject, NSError * _Nonnull * _Nullable error))resultConditionBlock;
+- (instancetype _Nonnull)initialize:(void (^_Nonnull)(M2DAPIRequest * _Nonnull request))initializeBlock;
+- (instancetype _Nonnull)finalize:(void (^_Nonnull)(M2DAPIRequest * _Nonnull request, NSDictionary * _Nullable httpHeaderFields, id _Nullable parsedObject))finalizeBlock;
+- (instancetype _Nonnull)inProgress:(void (^_Nonnull)(CGFloat progress))progressBlock;
 
 @property (nonatomic, assign) BOOL willSendAsynchronous;
 @property (nonatomic, assign) BOOL showNetworkActivityIndicator;
-@property (nonatomic, strong) NSString *httpMethod;
-@property (nonatomic, readonly) NSString *identifier;
-@property (nonatomic, strong) NSDictionary *requestParametors;
-@property (nonatomic, strong) NSURLResponse *response;
-@property (nonatomic, strong) NSDictionary *userInfo;
-@property (nonatomic, copy) id (^parseBlock)(NSData *data, NSError **error);
-@property (nonatomic, copy) BOOL (^resultConditionBlock)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error);
-@property (nonatomic, copy) void (^successBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
-@property (nonatomic, copy) void (^failureBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
-@property (nonatomic, copy) void (^initializeBlock)(M2DAPIRequest *request);
-@property (nonatomic, copy) void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
-@property (nonatomic, copy) void (^progressBlock)(CGFloat progress);
+@property (nonatomic, strong) NSString * _Nonnull httpMethod;
+@property (nonatomic, readonly) NSString * _Nonnull identifier;
+@property (nonatomic, strong) NSDictionary * _Nullable requestParametors;
+@property (nonatomic, strong) NSURLResponse * _Nullable response;
+@property (nonatomic, strong) NSDictionary * _Nullable userInfo;
+@property (nonatomic, copy) id _Nullable (^_Nullable parseBlock)(NSData * _Nullable data, NSError *_Nullable * _Nullable error);
+@property (nonatomic, copy) BOOL (^_Nullable resultConditionBlock)(M2DAPIRequest * _Nonnull request, NSURLResponse * _Nonnull response, id _Nullable parsedObject, NSError * _Nullable * _Nullable error);
+@property (nonatomic, copy) void (^_Nullable successBlock)(M2DAPIRequest * _Nonnull request, NSDictionary *_Nullable httpHeaderFields, id _Nullable parsedObject);
+@property (nonatomic, copy) void (^_Nullable failureBlock)(M2DAPIRequest * _Nonnull request, NSDictionary *_Nullable httpHeaderFields, id _Nullable parsedObject, NSError * _Nullable error);
+@property (nonatomic, copy) void (^_Nullable initializeBlock)(M2DAPIRequest * _Nonnull request);
+@property (nonatomic, copy) void (^_Nullable finalizeBlock)(M2DAPIRequest * _Nonnull request, NSDictionary * _Nullable httpHeaderFields, id _Nullable parsedObject);
+@property (nonatomic, copy) void (^_Nullable progressBlock)(CGFloat progress);
 
 @end

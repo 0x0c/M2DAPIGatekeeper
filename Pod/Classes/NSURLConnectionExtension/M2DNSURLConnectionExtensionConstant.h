@@ -9,8 +9,8 @@
 #ifndef NSURLConnectionExtension_NSURLConnectionExtensionConstant_h
 #define NSURLConnectionExtension_NSURLConnectionExtensionConstant_h
 
-extern NSString *const M2DHTTPMethodPOST;
-extern NSString *const M2DHTTPMethodGET;
-extern NSString *const M2D_BOUNDARY;
+extern NSString * _Nonnull const M2DHTTPMethodPOST;
+extern NSString * _Nonnull const M2DHTTPMethodGET;
+extern NSString * _Nonnull const M2D_BOUNDARY;
 
 #endif

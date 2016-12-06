@@ -10,14 +10,14 @@
 
 @interface NSMutableURLRequest (M2DFileUpload)
 
-- (void)m2d_setData:(NSData *)data;
+- (void)m2d_setData:(NSData * _Nonnull)data;
 
 @end
 
 @interface NSMutableData (M2DFileUpload)
 
-- (void)m2d_setData:(NSData *)data key:(NSString *)key;
-- (void)m2d_setContent:(NSData *)data filename:(NSString *)filename contentType:(NSString *)contentType;
-- (void)m2d_setJpegImage:(UIImage *)image filename:(NSString *)filename;
+- (void)m2d_setData:(NSData * _Nonnull)data key:(NSString * _Nonnull)key;
+- (void)m2d_setContent:(NSData * _Nonnull)data filename:(NSString * _Nonnull)filename contentType:(NSString * _Nonnull)contentType;
+- (void)m2d_setJpegImage:(UIImage * _Nonnull)image filename:(NSString * _Nonnull)filename;
 
 @end
