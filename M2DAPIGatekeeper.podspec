@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "M2DAPIGatekeeper"
-  s.version          = "2.0.2"
+  s.version          = "2.0.3"
   s.summary          = "Simple API networking framework."
   s.description      = <<-DESC
 							Simple API networking framework.
