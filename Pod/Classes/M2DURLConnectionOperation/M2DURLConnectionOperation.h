@@ -27,7 +27,7 @@
 + (void)globalStop:(NSString * _Nonnull)identifier;
 - (void)stop;
 - (instancetype _Nonnull)initWithRequest:(NSURLRequest * _Nonnull)request;
-- (instancetype _Nonnull)initWithRequest:(NSURLRequest * _Nonnull)request completeBlock:(void  (^_Nullable)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock;
+- (instancetype _Nonnull)initWithRequest:(NSURLRequest * _Nonnull)request completeBlock:(void  (^_Nullable)(M2DURLConnectionOperation * _Nonnull op, NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable error))completeBlock;
 - (void)setProgressBlock:(void (^_Nullable)(CGFloat progress))progressBlock;
 - (NSString * _Nonnull)sendRequest;
 - (NSString * _Nonnull)sendRequestWithCompleteBlock:(void (^_Nullable)(M2DURLConnectionOperation * _Nonnull op, NSURLResponse  * _Nonnull response, NSData * _Nullable data, NSError * _Nullable error))completeBlock;
