@@ -28,13 +28,14 @@
 		[parameterString appendString:[NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue]];
 	}];
 	
-	if ([method isEqualToString:M2DHTTPMethodPOST]) {
+	
+	if ([method isEqualToString:M2DHTTPMethodGET]) {
+		[self setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", self.URL.absoluteString, parameterString]]];
+	}
+	else {
 		[self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 		[self setHTTPMethod:method];
 		[self setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
-	}
-	else if ([method isEqualToString:M2DHTTPMethodGET]) {
-		[self setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", self.URL.absoluteString, parameterString]]];
 	}
 }
 
