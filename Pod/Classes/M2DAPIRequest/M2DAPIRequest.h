@@ -13,6 +13,8 @@
 
 + (instancetype _Nonnull)GETRequest:(NSURL * _Nonnull)url;
 + (instancetype _Nonnull)POSTRequest:(NSURL * _Nonnull)url;
++ (instancetype _Nonnull)DELETERequest:(NSURL * _Nonnull)url;
++ (instancetype _Nonnull)PUTRequest:(NSURL * _Nonnull)url;
 - (instancetype _Nonnull)asynchronousRequest;
 - (instancetype _Nonnull)parametors:(NSDictionary * _Nullable)params;
 - (instancetype _Nonnull)whenSucceeded:(void (^_Nonnull)(M2DAPIRequest * _Nonnull request, NSDictionary * _Nullable httpHeaderFields, id _Nullable parsedObject))successBlock;

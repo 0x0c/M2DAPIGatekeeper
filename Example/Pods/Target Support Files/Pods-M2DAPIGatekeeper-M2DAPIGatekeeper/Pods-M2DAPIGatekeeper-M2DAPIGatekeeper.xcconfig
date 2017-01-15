@@ -1,0 +1,1 @@
+PODS_M_DAPIGATEKEEPER_M_DAPIGATEKEEPER_OTHER_LDFLAGS = -framework "QuartzCore" -framework "UIKit"

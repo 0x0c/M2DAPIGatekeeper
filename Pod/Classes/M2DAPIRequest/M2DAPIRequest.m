@@ -42,6 +42,22 @@
 	return request;
 }
 
++ (instancetype)DELETERequest:(NSURL *)url
+{
+	M2DAPIRequest *request = [M2DAPIRequest requestWithURL:url];
+	[request setHTTPMethod:M2DHTTPMethodDELETE];
+	
+	return request;
+}
+
++ (instancetype)PUTRequest:(NSURL *)url
+{
+	M2DAPIRequest *request = [M2DAPIRequest requestWithURL:url];
+	[request setHTTPMethod:M2DHTTPMethodPUT];
+	
+	return request;
+}
+
 + (instancetype)requestWithURL:(NSURL *)url
 {
 	M2DAPIRequest *request = [[M2DAPIRequest alloc] initWithURL:url];

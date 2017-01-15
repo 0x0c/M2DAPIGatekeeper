@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D99A50AC0E34BC5B0EF2317 /* libPods-M2DAPIGatekeeper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D3A1196A128F24FA301A50 /* libPods-M2DAPIGatekeeper.a */; };
+		E95AD37B1E1C7AC40052125F /* M2DAPIEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = E95AD37A1E1C7AC40052125F /* M2DAPIEndpoint.m */; };
 		E99ACDEA1A164604001FEB35 /* M2DAPIGatekeeperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E99ACDE91A164604001FEB35 /* M2DAPIGatekeeperTest.m */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +22,8 @@
 		61F772A705B1029D039CB348 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BEAAC63DBE0D72A24DAEEDE7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E2089528CD7581F8EEB61297 /* Pods-M2DAPIGatekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-M2DAPIGatekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-M2DAPIGatekeeper/Pods-M2DAPIGatekeeper.release.xcconfig"; sourceTree = "<group>"; };
+		E95AD3791E1C7AC40052125F /* M2DAPIEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2DAPIEndpoint.h; sourceTree = "<group>"; };
+		E95AD37A1E1C7AC40052125F /* M2DAPIEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M2DAPIEndpoint.m; sourceTree = "<group>"; };
 		E9876C1C19DBA90000A498F3 /* M2DAPIGatekeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2DAPIGatekeeper.h; sourceTree = "<group>"; };
 		E9876C1D19DBA90000A498F3 /* M2DAPIGatekeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M2DAPIGatekeeper.m; sourceTree = "<group>"; };
 		E9876C1F19DBA90000A498F3 /* M2DAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2DAPIRequest.h; sourceTree = "<group>"; };
@@ -107,6 +110,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E95AD3781E1C7A680052125F /* M2DAPIEndpoint */ = {
+			isa = PBXGroup;
+			children = (
+				E95AD3791E1C7AC40052125F /* M2DAPIEndpoint.h */,
+				E95AD37A1E1C7AC40052125F /* M2DAPIEndpoint.m */,
+			);
+			path = M2DAPIEndpoint;
+			sourceTree = "<group>";
+		};
 		E9876C1619DBA90000A498F3 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +131,7 @@
 		E9876C1919DBA90000A498F3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E95AD3781E1C7A680052125F /* M2DAPIEndpoint */,
 				E9876C1B19DBA90000A498F3 /* M2DAPIGatekeeper */,
 				E9876C1E19DBA90000A498F3 /* M2DAPIRequest */,
 				E9876C2119DBA90000A498F3 /* M2DURLConnectionOperation */,
@@ -306,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E99ACDEA1A164604001FEB35 /* M2DAPIGatekeeperTest.m in Sources */,
+				E95AD37B1E1C7AC40052125F /* M2DAPIEndpoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
