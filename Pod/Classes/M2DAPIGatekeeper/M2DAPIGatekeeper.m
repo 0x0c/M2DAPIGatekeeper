@@ -40,14 +40,16 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 
 + (void)setNetworkActivityIndicatorVisible:(BOOL)setVisible
 {
-	static NSInteger connectionCount = 0;
-	if (setVisible) {
-		connectionCount++;
-	}
-	else {
-		connectionCount--;
-	}
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(connectionCount > 0)];
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+		static NSInteger connectionCount = 0;
+		if (setVisible) {
+			connectionCount++;
+		}
+		else {
+			connectionCount--;
+		}
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(connectionCount > 0)];
+	}];
 }
 
 - (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag

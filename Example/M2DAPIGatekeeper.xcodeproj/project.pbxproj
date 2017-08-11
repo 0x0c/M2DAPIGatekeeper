@@ -249,6 +249,7 @@
 				TargetAttributes = {
 					E99ACDE41A164604001FEB35 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 3VC35JGS33;
 					};
 				};
 			};
@@ -414,6 +415,7 @@
 			baseConfigurationReference = EE36EA39BA7DC2A71940E5ED /* Pods-M2DAPIGatekeeper.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEVELOPMENT_TEAM = 3VC35JGS33;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -437,6 +439,7 @@
 			baseConfigurationReference = E2089528CD7581F8EEB61297 /* Pods-M2DAPIGatekeeper.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEVELOPMENT_TEAM = 3VC35JGS33;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
