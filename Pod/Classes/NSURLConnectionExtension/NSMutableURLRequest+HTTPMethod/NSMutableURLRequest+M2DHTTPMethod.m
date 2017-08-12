@@ -22,9 +22,9 @@
 				[parameterString appendString:@"?"];
 			}
 		}
-		NSString *escapedKey = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)key, NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
+		NSString *escapedKey = [key stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
-		NSString *escapedValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)(value), NULL, CFSTR (";,/?:@&=+$#"), kCFStringEncodingUTF8));
+		NSString *escapedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 		[parameterString appendString:[NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue]];
 	}];
 	
