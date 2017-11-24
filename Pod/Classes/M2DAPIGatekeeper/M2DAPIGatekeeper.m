@@ -17,10 +17,9 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 };
 
 @interface M2DAPIGatekeeper ()
-{
-	NSMutableArray *identifiers_;
-	NSOperationQueue *queue_;
-}
+
+@property (nonatomic, strong) NSMutableArray *identifiers;
+@property (nonatomic, strong) NSOperationQueue *queue;
 
 @end
 
@@ -37,6 +36,22 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	});
 	
 	return sharedInstance;
+}
+
++ (void)setNetworkActivityIndicatorVisible:(BOOL)setVisible
+{
+#if !(defined(__has_feature) && __has_feature(attribute_availability_app_extension))
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+		static NSInteger connectionCount = 0;
+		if (setVisible) {
+			connectionCount++;
+		}
+		else {
+			connectionCount--;
+		}
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(connectionCount > 0)];
+	}];
+#endif
 }
 
 - (NSString *)sendRequestWithURL:(NSURL *)url method:(NSString *)method parametors:(NSDictionary *)params success:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failed:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock asynchronous:(BOOL)flag
@@ -60,12 +75,29 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	[self configureParams:request];
 	[self configureHandler:request];
 	
+	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSData *rawData) = self.finalizeBlock;
+
 	if (self.initializeBlock) {
 		self.initializeBlock(request, request.requestParametors);
 	}
 	
-	__block void (^finalizeBlock)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject) = self.finalizeBlock;
+	if (self.reachabilityCondition && self.reachabilityCondition(request) == NO) {
+		NSError *e = [NSError errorWithDomain:@"No internet connection" code:100 userInfo:nil];
+		if (request.failureBlock) {
+			request.failureBlock(request, nil, nil, e);
+		}
+		if (request.finalizeBlock) {
+			request.finalizeBlock(request, nil, nil);
+		}
+		if (finalizeBlock) {
+			finalizeBlock(request, nil, nil, nil);
+		}
+		
+		return nil;
+	}
+	
 	void (^f)(NSURLResponse *response, NSData *data, NSError *error) = ^(NSURLResponse *response, NSData *data, NSError *error){
+		request.response = response;
 		NSError *finalError = error;
 		id parsedObject = nil;
 		if (error) {
@@ -78,27 +110,29 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 			parsedObject = request.parseBlock(data, &e);
 			finalError = e;
 			NSError *e2 = nil;
-			BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+			BOOL result = request.resultConditionBlock(request, response, parsedObject, &e2);
 			finalError = e2;
-			if (result && finalError != nil && request.successBlock) {
-				request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+			if (result && finalError == nil) {
+				if (request.successBlock) {
+					request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+				}
 			}
-			else if	(request.failureBlock) {
+			else if (request.failureBlock) {
 				request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
 			}
 		}
 		
 		if (request.finalizeBlock) {
-			request.finalizeBlock(request, parsedObject, finalError);
+			request.finalizeBlock(request, parsedObject, nil);
 		}
 		if (finalizeBlock) {
-			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+			finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, data);
 		}
 		
 		if (_debugMode) {
 			__autoreleasing NSString *r = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 			NSLog(@"raw result:[%lu][%@://%@%@]%@", (long)[(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
+			NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 		}
 	};
 	
@@ -106,17 +140,29 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSLog(@"post:[%@]%@", [request.URL absoluteString], [request.requestParametors description]);
 	}
 	
+	if (self.showNetworkActivityIndicator && request.showNetworkActivityIndicator) {
+		[[self class] setNetworkActivityIndicatorVisible:YES];
+	}
 	NSString *identifier = nil;
 	if (request.willSendAsynchronous) {
-		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
+		__weak typeof(self) bself = self;
+		__weak typeof(request) br = request;
+		M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 			f(response, data, error);
-			[identifiers_ removeObject:identifier];
+			@synchronized(identifiers_) {
+				[self.identifiers removeObject:identifier];
+			}
+			if (bself.showNetworkActivityIndicator && br.showNetworkActivityIndicator) {
+				[[self class] setNetworkActivityIndicatorVisible:NO];
+			}
 		}];
 		if (request.progressBlock) {
 			[op setProgressBlock:request.progressBlock];
 		}
 		identifier = [op sendRequest];
-		[identifiers_ addObject:identifier];
+		@synchronized(identifiers_) {
+			[self.identifiers addObject:identifier];
+		}
 		if (self.didRequestIdentifierPushBlock) {
 			self.didRequestIdentifierPushBlock(identifier);
 		}
@@ -125,13 +171,17 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		NSError *error = nil;
 		NSURLResponse *response = nil;
 		NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
+		request.response = response;
 		f(response, data, error);
+		if (self.showNetworkActivityIndicator && request.showNetworkActivityIndicator) {
+			[[self class] setNetworkActivityIndicatorVisible:NO];
+		}
 	}
 	
 	return identifier;
 }
 
-- (NSDictionary *)sendSynchronousRequest:(M2DAPIRequest *)request
+- (id)sendSynchronousRequest:(M2DAPIRequest *)request
 {
 	[self configureParams:request];
 	[self configureHandler:request];
@@ -147,6 +197,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	NSError *error = nil;
 	NSURLResponse *response = nil;
 	NSData *data = [NSURLConnection sendSynchronousRequest:(NSURLRequest *)request returningResponse:&response error:&error];
+	request.response = response;
 	finalError = error;
 	id parsedObject = nil;
 	if (error) {
@@ -158,27 +209,29 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		__autoreleasing NSError *e = nil;
 		parsedObject = request.parseBlock(data, &e);
 		NSError *e2 = nil;
-		BOOL result = request.resultConditionBlock(response, parsedObject, &e2);
+		BOOL result = request.resultConditionBlock(request, response, parsedObject, &e2);
 		finalError = e2;
-		if (result && finalError != nil && request.successBlock) {
-			request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+		if (result && finalError == nil) {
+			if (request.successBlock) {
+				request.successBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+			}
 		}
-		else if	(request.failureBlock) {
+		else if (request.failureBlock) {
 			request.failureBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, finalError);
 		}
 	}
 	
 	if (_debugMode) {
 		__autoreleasing NSString *r = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 		NSLog(@"raw result:[%lu][%@://%@%@]%@", (long)[(NSHTTPURLResponse *)response statusCode], response.URL.scheme, response.URL.host, response.URL.path, r);
+		NSLog(@"result[%lu]:%@", (long)[(NSHTTPURLResponse *)response statusCode], [parsedObject description]);
 	}
 	
 	if (request.finalizeBlock) {
 		request.finalizeBlock(request, parsedObject, finalError);
 	}
 	if (self.finalizeBlock) {
-		self.finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject);
+		self.finalizeBlock(request, [(NSHTTPURLResponse *)response allHeaderFields], parsedObject, data);
 	}
 	
 	return parsedObject;
@@ -190,7 +243,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return [self sendRequest:request];
 }
 
-- (NSData *)getRawData:(M2DAPIRequest *)request
+- (NSData *)rawDataWithRequest:(M2DAPIRequest *)request
 {
 	[self configureParams:request];
 	NSError *error = nil;
@@ -200,19 +253,23 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return data;
 }
 
-- (NSString *)getRawDataAsynchronous:(M2DAPIRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))handler
+- (NSString *)rawDataWithAsynchronousRequest:(M2DAPIRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))handler
 {
 	[self configureParams:request];
 	NSString *identifier = nil;
-	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(NSURLResponse *response, NSData *data, NSError *error) {
+	M2DURLConnectionOperation *op = [[M2DURLConnectionOperation alloc] initWithRequest:request completeBlock:^(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error) {
 		handler(data, response, error);
-		[identifiers_ removeObject:identifier];
+		@synchronized(identifiers_) {
+			[self.identifiers removeObject:identifier];
+		}
 	}];
 	if (request.progressBlock) {
 		[op setProgressBlock:request.progressBlock];
 	}
 	identifier = [op sendRequest];
-	[identifiers_ addObject:identifier];
+	@synchronized(identifiers_) {
+		[self.identifiers addObject:identifier];
+	}
 	if (self.didRequestIdentifierPushBlock) {
 		self.didRequestIdentifierPushBlock(identifier);
 	}
@@ -226,7 +283,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 	return self;
 }
 
-- (instancetype)resultConditionBlock:(BOOL (^)(NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock
+- (instancetype)resultConditionBlock:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError **error))resultConditionBlock
 {
 	_resultConditionBlock = [resultConditionBlock copy];
 	return self;
@@ -236,11 +293,12 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 {
 	self = [super init];
 	if (self) {
-		queue_ = [[NSOperationQueue alloc] init];
+		self.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+		self.queue = [[NSOperationQueue alloc] init];
 		identifiers_ = [NSMutableArray new];
 		_timeoutInterval = 30.0;
 		_debugMode = NO;
-		[self setResultConditionBlock:^BOOL(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
+		[self setResultConditionBlock:^BOOL(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
 			BOOL result = [(NSHTTPURLResponse *)response statusCode] == 200 ? YES : NO;
 			if (*error != NULL && result == NO) {
 				*error = [NSError errorWithDomain:@"API result failure." code:M2DAPIGatekeeperResultFailure userInfo:nil];
@@ -249,7 +307,7 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 		}];
 		[self setParseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
 			NSError *e = nil;
-			id parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
+			id parsedObject = data != nil ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e] : nil;
 			if (e != nil) {
 				*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
 			}
@@ -292,9 +350,9 @@ typedef NS_ENUM(NSUInteger, M2DAPIGatekeeperErrorCode) {
 
 - (void)configureParams:(M2DAPIRequest *)request
 {
-	if (self.baseParameter) {
+	if (self.baseParameterBlock) {
 		NSMutableDictionary *p = [request.requestParametors mutableCopy];
-		[p addEntriesFromDictionary:self.baseParameter];
+		self.baseParameterBlock(request, p);
 		[request parametors:p];
 	}
 	if (request.requestParametors) {

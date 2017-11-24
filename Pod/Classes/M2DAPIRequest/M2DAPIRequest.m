@@ -11,18 +11,10 @@
 #import "M2DNSURLConnectionExtensionConstant.h"
 
 @interface M2DAPIRequest ()
-{
-	BOOL (^resultConditionBlock_)(NSURLResponse *response, id parsedObject);
-	void (^successBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject);
-	void (^failureBlock_)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error);
-}
 
 @end
 
 @implementation M2DAPIRequest
-
-@synthesize successBlock = successBlock_;
-@synthesize failureBlock = failureBlock_;
 
 #pragma mark - Override
 
@@ -50,6 +42,22 @@
 	return request;
 }
 
++ (instancetype)DELETERequest:(NSURL *)url
+{
+	M2DAPIRequest *request = [M2DAPIRequest requestWithURL:url];
+	[request setHTTPMethod:M2DHTTPMethodDELETE];
+	
+	return request;
+}
+
++ (instancetype)PUTRequest:(NSURL *)url
+{
+	M2DAPIRequest *request = [M2DAPIRequest requestWithURL:url];
+	[request setHTTPMethod:M2DHTTPMethodPUT];
+	
+	return request;
+}
+
 + (instancetype)requestWithURL:(NSURL *)url
 {
 	M2DAPIRequest *request = [[M2DAPIRequest alloc] initWithURL:url];
@@ -60,19 +68,20 @@
 {
 	self = [super initWithURL:URL];
 	if (self) {
+		self.showNetworkActivityIndicator = YES;
 		_identifier = [[NSProcessInfo processInfo] globallyUniqueString];
-		_requestParametors = @{};
+		self.requestParametors = @{};
 	}
 	
 	return self;
 }
 
-- (instancetype)initWithURL:(NSURL *)url successBlock:(void (^)(M2DAPIRequest *request, id parsedObject))successBlock failureBlock:(void (^)(M2DAPIRequest *request, NSError *error))failureBlock
+- (instancetype)initWithURL:(NSURL *)url successBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject))successBlock failureBlock:(void (^)(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error))failureBlock
 {
 	self = [self initWithURL:url];
 	if (self) {
-		successBlock_ = [successBlock copy];
-		failureBlock_ = [failureBlock copy];
+		self.successBlock = successBlock;
+		self.failureBlock = failureBlock;
 	}
 	
 	return self;
@@ -86,7 +95,7 @@
 
 - (instancetype)parametors:(NSDictionary *)params
 {
-	_requestParametors = [params copy];
+	self.requestParametors = params;
 	return self;
 }
 
@@ -108,13 +117,13 @@
 	return self;
 }
 
-- (instancetype)resultCondition:(BOOL (^)(NSURLResponse *, id, NSError *__autoreleasing *))resultConditionBlock
+- (instancetype)resultCondition:(BOOL (^)(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error))resultConditionBlock
 {
 	self.resultConditionBlock = resultConditionBlock;
 	return self;
 }
 
-- (instancetype)initialize:(void (^)(M2DAPIRequest *))initializeBlock
+- (instancetype)initialize:(void (^)(M2DAPIRequest *request))initializeBlock
 {
 	self.initializeBlock = initializeBlock;
 	return self;

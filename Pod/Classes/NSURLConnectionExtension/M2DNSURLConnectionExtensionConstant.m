@@ -10,4 +10,6 @@
 
 NSString *const M2DHTTPMethodPOST = @"POST";
 NSString *const M2DHTTPMethodGET = @"GET";
+NSString *const M2DHTTPMethodDELETE = @"DELETE";
+NSString *const M2DHTTPMethodPUT = @"PUT";
 NSString *const M2D_BOUNDARY = @"----m2d_NSMutableURLRequest_Boundary";

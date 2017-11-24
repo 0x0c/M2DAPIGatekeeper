@@ -9,12 +9,12 @@
 
 @interface NSMutableURLRequest (M2DHTTPMethod)
 
-- (void)m2d_setParameter:(NSDictionary *)params method:(NSString *)method;
+- (void)m2d_setParameter:(NSDictionary * _Nonnull)params method:(NSString * _Nonnull)method;
 
 @end
 
 @interface NSMutableData (M2DHTTPMethod)
 
-- (void)m2d_setParameterWithKey:(NSString *)key value:(NSString *)value;
+- (void)m2d_setParameterWithKey:(NSString * _Nonnull)key value:(NSString * _Nonnull)value;
 
 @end

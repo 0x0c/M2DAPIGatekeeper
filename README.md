@@ -7,7 +7,7 @@
 
 ## Requirements
 
-- Runs on iOS 6.0 or later.
+- Runs on iOS 7.0 or later.
 
 ## Contribution
 
@@ -27,28 +27,26 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Only two steps to send request like this.
 
 	// Send asynchronous request
-	M2DAPIRequest *request = [[[[M2DAPIRequest POSTRequest:[NSURL URLWithString:...]] parametors:@{...}]  whenSucceeded:^(M2DAPIRequest *request, NSDictionary *httpHeaderField, id parsedObject) {
+	M2DAPIRequest *r = [M2DAPIRequest GETRequest:[NSURL URLWithString:@"URL"]];
+	[[r whenSucceeded:^(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject) {
 		//When result condition is true
-	}] whenFailed:^(M2DAPIRequest *request, NSDictionary *httpHeaderField, id parsedObject, NSError *error) {
+	}] whenFailed:^(M2DAPIRequest *request, NSDictionary *httpHeaderFields, id parsedObject, NSError *error) {
 		//When result condition is false
 	}];
-	[[M2DAPIGatekeeper sharedInstance] sendRequest:request];
 
 A lot of methods to control each sequences.
 For example,
 
 	M2DAPIGatekeeper *gatekeeper = [M2DAPIGatekeeper sharedInstance];
 	[gatekeeper parseBlock:^id(NSData *data, NSError *__autoreleasing *error) {
-		// parse data
-		id parsedObject = nil;
-		NSError *e = nil;
-		if (error == nil && data != nil) {
-			parsedObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&e];
-			*error = [NSError errorWithDomain:@"Parse error." code:M2DAPIGatekeeperParseError userInfo:@{@"reason":[e copy]}];
+		id result = nil;
+		if (*error == nil) {
+			result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:error];
 		}
-		return parsedObject;
+		return result;
 	}];
-	[gatekeeper resultConditionBlock:^BOOL(NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
+	
+	[gatekeeper resultConditionBlock:^BOOL(M2DAPIRequest *request, NSURLResponse *response, id parsedObject, NSError *__autoreleasing *error) {
 		return [(NSHTTPURLResponse *)response statusCode] == 200;
 	}];
 
