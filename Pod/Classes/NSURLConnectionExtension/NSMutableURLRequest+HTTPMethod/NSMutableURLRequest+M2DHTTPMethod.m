@@ -22,9 +22,11 @@
 				[parameterString appendString:@"?"];
 			}
 		}
-		NSString *escapedKey = [key stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+		NSMutableCharacterSet *escapeCharacterSet = [NSMutableCharacterSet alphanumericCharacterSet];
+		[escapeCharacterSet addCharactersInString:@"-._~"];
+		NSString *escapedKey = [key stringByAddingPercentEncodingWithAllowedCharacters:escapeCharacterSet];
 		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
-		NSString *escapedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+		NSString *escapedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:escapeCharacterSet];
 		[parameterString appendString:[NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue]];
 	}];
 	if ([method isEqualToString:M2DHTTPMethodGET]) {
