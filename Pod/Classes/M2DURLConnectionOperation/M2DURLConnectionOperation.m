@@ -13,12 +13,7 @@ static NSOperationQueue *globalConnectionQueue;
 @interface M2DURLConnectionOperation ()
 
 @property (nonatomic, copy) void (^completeBlock)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error);
-@property (nonatomic, copy) void (^progressBlock)(CGFloat progress);
-@property (nonatomic, assign) BOOL executing;
-@property (nonatomic, assign) CGFloat dataLength;
-@property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, copy) NSURLSessionDataTask *task;
-@property (nonatomic, copy) NSURLResponse *response;
 
 @end
 
@@ -78,37 +73,37 @@ static NSOperationQueue *globalConnectionQueue;
 
 #pragma mark - NSURLSessionDataDelegate
 
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
-{
-	self.response = response;
-	self.data = [NSMutableData new];
-	self.dataLength = response.expectedContentLength;
-	completionHandler(NSURLSessionResponseAllow);
-}
-
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
-{
-	[self.data appendData:data];
-	if (self.progressBlock) {
-		self.progressBlock((double)self.data.length / (double)self.dataLength);
-	}
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
-{
-	[self.delegate connectionOperationDidComplete:self session:session task:task error:error];
-	if (error) {
-		self.completeBlock(self, self.response, nil, error);
-	}
-	else {
-		if (self.completeBlock) {
-			self.completeBlock(self, self.response, self.data, nil);
-		}
-	}
-	[self finish];
-	[session invalidateAndCancel];
-	self.data = nil;
-}
+//- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
+//{
+//    self.response = response;
+//    self.data = [NSMutableData new];
+//    self.dataLength = response.expectedContentLength;
+//    completionHandler(NSURLSessionResponseAllow);
+//}
+//
+//- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
+//{
+//    [self.data appendData:data];
+//    if (self.progressBlock) {
+//        self.progressBlock((double)self.data.length / (double)self.dataLength);
+//    }
+//}
+//
+//- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+//{
+//    [self.delegate connectionOperationDidComplete:self session:session task:task error:error];
+//    if (error) {
+//        self.completeBlock(self, self.response, nil, error);
+//    }
+//    else {
+//        if (self.completeBlock) {
+//            self.completeBlock(self, self.response, self.data, nil);
+//        }
+//    }
+//    [self finish];
+//    [session invalidateAndCancel];
+//    self.data = nil;
+//}
 
 #pragma mark -
 
@@ -136,8 +131,24 @@ static NSOperationQueue *globalConnectionQueue;
 - (NSString *)sendRequest:(NSURLRequest *)request completeBlock:(void (^)(M2DURLConnectionOperation *op, NSURLResponse *response, NSData *data, NSError *error))completeBlock
 {
 	self.completeBlock = completeBlock;
-	NSURLSession *session = [NSURLSession sessionWithConfiguration:self.configuration delegate:self delegateQueue:[[self class] globalConnectionQueue]];
-	self.task = [session dataTaskWithRequest:request];
+    static NSURLSession *session;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        session = [NSURLSession sessionWithConfiguration:self.configuration delegate:self delegateQueue:[[self class] globalConnectionQueue]];
+    });
+    typeof (self) weakSelf = self;
+    self.task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self.delegate connectionOperationDidComplete:self session:session task:_task error:error];
+        if (error) {
+            weakSelf.completeBlock(weakSelf, response, nil, error);
+        }
+        else {
+            if (self.completeBlock) {
+                weakSelf.completeBlock(weakSelf, response, data, nil);
+            }
+        }
+        [self finish];
+    }];
 	[self.task resume];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:self.identifier object:nil];
 	
@@ -146,7 +157,6 @@ static NSOperationQueue *globalConnectionQueue;
 
 - (void)finish
 {
-	self.executing = NO;
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:self.identifier object:nil];
 }
 
