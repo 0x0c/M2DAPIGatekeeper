@@ -22,14 +22,15 @@
 				[parameterString appendString:@"?"];
 			}
 		}
-		NSString *escapedKey = [key stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		NSMutableCharacterSet *escapeCharacterSet = [NSMutableCharacterSet alphanumericCharacterSet];
+		[escapeCharacterSet addCharactersInString:@"-._~"];
+		NSString *escapedKey = [key stringByAddingPercentEncodingWithAllowedCharacters:escapeCharacterSet];
 		NSString *value = [params[key] respondsToSelector:@selector(stringValue)] ? [params[key] stringValue] : params[key];
-		NSString *escapedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		NSString *escapedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:escapeCharacterSet];
 		[parameterString appendString:[NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue]];
 	}];
-	
-	
 	if ([method isEqualToString:M2DHTTPMethodGET]) {
+
 		[self setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", self.URL.absoluteString, parameterString]]];
 	}
 	else {
@@ -47,10 +48,11 @@
 {
 	NSString *boundary = M2D_BOUNDARY;
 	[self appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [self appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
-    [self appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [self appendData:[[NSString stringWithFormat:@"%@\r\n", value] dataUsingEncoding:NSUTF8StringEncoding]];
+	[self appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+	[self appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[self appendData:[[NSString stringWithFormat:@"%@\r\n", value] dataUsingEncoding:NSUTF8StringEncoding]];
 	[self appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 @end
+
